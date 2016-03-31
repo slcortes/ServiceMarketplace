@@ -1,6 +1,7 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 from django.template.context_processors import csrf
 from market.forms import MyRegistrationForm
 
@@ -27,6 +28,7 @@ def auth_view(request):
         return HttpResponseRedirect('/accounts/invalid')
 
 
+@login_required(login_url='/accounts/login/')
 def loggedin(request):
     return render_to_response(
         'market/loggedin.html',
@@ -38,6 +40,7 @@ def invalid_login(request):
     return render_to_response('market/invalid_login.html')
 
 
+@login_required(login_url='/accounts/login/')
 def logout(request):
     auth.logout(request)
     return render_to_response('market/logout.html')
