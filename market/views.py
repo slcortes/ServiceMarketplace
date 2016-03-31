@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.template.context_processors import csrf
-from market.forms import MyRegistrationForm
+from market.forms import MyRegistrationForm, ServiceForm
 from market.models import Service
 
 
@@ -79,3 +79,11 @@ def search(request):
     return render(request, 'search_result.html', {'results': results})
     # ^ search_results.html located in ServiceMarketplace\market\templates
     # TODO: move search_results.html into market file and change path so that it finds file correctly
+
+
+def service_create(request):
+    args = {}
+
+    args.update(csrf(request))
+    args['form'] = ServiceForm()
+    return render_to_response('market/service_create.html', args)
