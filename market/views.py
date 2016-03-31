@@ -4,6 +4,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.template.context_processors import csrf
 from market.forms import MyRegistrationForm
+from market.models import Service
 
 
 def home(request):
@@ -62,3 +63,17 @@ def register_user(request):
 
 def register_success(request):
     return render_to_response('market/register_success.html')
+
+
+# Search view
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        # user entered query
+        results = Service.objects.filter(title__contains=query).order_by('created_date')
+    else:
+        # user did not enter query. return all results
+        results = Service.objects.all()
+    return render(request, 'search_result.html', {'results': results})
+    # ^ search_results.html located in ServiceMarketplace\market\templates
+    # TODO: move search_results.html into market file and change path so that it finds file correctly

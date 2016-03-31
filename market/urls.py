@@ -12,4 +12,7 @@ urlpatterns = [
     url(r'^accounts/invalid/$', views.invalid_login),
     url(r'^accounts/register/$', views.register_user),
     url(r'^accounts/register_success/$', views.register_success),
+    
+    # Search
+    url(r'^search/$', views.search, name="search"),
 ]

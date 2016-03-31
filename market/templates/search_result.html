@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Service Marketplace</title>
+
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    </head>
+    
+    <body>
+        <p>Search results page...</p>        
+        
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                    {% for service in results %}
+                        <div class="service">
+                            <div class="date">
+                                <p>created: {{ service.created_date }}</p>
+                            </div>
+                            <h1><a href="">{{ service.title }}</a></h1>
+                            <p>{{ service.description|linebreaks }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </body>
+</html>

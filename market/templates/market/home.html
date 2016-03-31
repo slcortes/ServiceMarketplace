@@ -10,5 +10,15 @@
 <body>
     <h1>Welcome to the Service Marketplace!</h1>
     <p>People all over the U.S. looking to hire someone!</p>
+
+   
+   
+    <!--Search button-->
+    <form method="GET" action="{% url 'search' %}">
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
+    
+    
 </body>
 </html>
