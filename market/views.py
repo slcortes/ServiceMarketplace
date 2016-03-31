@@ -28,7 +28,7 @@ def auth_view(request):
         return HttpResponseRedirect('/accounts/invalid')
 
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def loggedin(request):
     return render_to_response(
         'market/loggedin.html',
@@ -40,7 +40,7 @@ def invalid_login(request):
     return render_to_response('market/invalid_login.html')
 
 
-@login_required(login_url='/accounts/login/')
+@login_required()
 def logout(request):
     auth.logout(request)
     return render_to_response('market/logout.html')
