@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.template.context_processors import csrf
+from market.forms import MyRegistrationForm
 
 
 def home(request):
@@ -40,3 +41,21 @@ def invalid_login(request):
 def logout(request):
     auth.logout(request)
     return render_to_response('market/logout.html')
+
+
+def register_user(request):
+    if request.method == "POST":  # Occurs after user submits info
+        form = MyRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/accounts/register_success/')
+
+    args = {}
+    args.update(csrf(request))
+
+    args['form'] = MyRegistrationForm()
+    return render_to_response('market/register.html', args)
+
+
+def register_success(request):
+    return render_to_response('market/register_success.html')
