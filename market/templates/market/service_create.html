@@ -1,0 +1,16 @@
+{% extends "market/base.html" %}
+
+{% block content %}
+
+    <h2>Create Service</h2>
+    <form action="/service/create/" method="post">{% csrf_token %}
+        {{form}}
+
+        {% if errors %}
+            {{errors}}
+        {% endif %}
+
+        <input type="submit" value="Create" />
+    </form>
+
+{% endblock %}

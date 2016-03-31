@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.template.context_processors import csrf
-from market.forms import MyRegistrationForm
+from market.forms import MyRegistrationForm, ServiceForm
 from market.models import Service
 
 
@@ -72,12 +72,14 @@ def search(request):
     query = request.GET.get('q')
     if query:
         # user entered query
-        results = (Service.objects.filter(title__contains=query) |        \
+        results = (Service.objects.filter(title__contains=query) |  \
                    Service.objects.filter(description__contains=query)).order_by('-created_date')
     else:
         # user did not enter query. return all results
         results = Service.objects.all().order_by('-created_date')
     return render(request, 'market/search_result.html', {'results': results})
+    # ^ search_results.html located in ServiceMarketplace\market\templates
+    # TODO: move search_results.html into market file and change path so that it finds file correctly
 
 
 # Browse view
@@ -86,6 +88,9 @@ def browse(request):
     return render(request, 'market/search_result.html', {'results': results})
 
 
+def service_create(request):
+    args = {}
 
-
-
+    args.update(csrf(request))
+    args['form'] = ServiceForm()
+    return render_to_response('market/service_create.html', args)
