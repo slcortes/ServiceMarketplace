@@ -1,7 +1,10 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 from django.template.context_processors import csrf
+from market.forms import MyRegistrationForm, ServiceForm
+from market.models import Service
 
 
 def home(request):
@@ -26,6 +29,7 @@ def auth_view(request):
         return HttpResponseRedirect('/accounts/invalid')
 
 
+@login_required()
 def loggedin(request):
     return render_to_response(
         'market/loggedin.html',
@@ -37,6 +41,50 @@ def invalid_login(request):
     return render_to_response('market/invalid_login.html')
 
 
+@login_required()
 def logout(request):
     auth.logout(request)
     return render_to_response('market/logout.html')
+
+
+def register_user(request):
+    args = {}
+    if request.method == "POST":  # Occurs after user submits info
+        form = MyRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/accounts/register_success/')
+        else:
+            args['errors'] = form.errors
+
+    args.update(csrf(request))
+
+    args['form'] = MyRegistrationForm()
+    return render_to_response('market/register.html', args)
+
+
+def register_success(request):
+    return render_to_response('market/register_success.html')
+
+
+# Search view
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        # user entered query
+        results = (Service.objects.filter(title__contains=query) |  \
+                   Service.objects.filter(description__contains=query)).order_by('-created_date')
+    else:
+        # user did not enter query. return all results
+        results = Service.objects.all().order_by('-created_date')
+    return render(request, 'market/search_result.html', {'results': results})
+    # ^ search_results.html located in ServiceMarketplace\market\templates
+    # TODO: move search_results.html into market file and change path so that it finds file correctly
+
+
+def service_create(request):
+    args = {}
+
+    args.update(csrf(request))
+    args['form'] = ServiceForm()
+    return render_to_response('market/service_create.html', args)

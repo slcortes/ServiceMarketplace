@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'market',
 ]
 
+LOGIN_URL = '/accounts/login/'
+
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
