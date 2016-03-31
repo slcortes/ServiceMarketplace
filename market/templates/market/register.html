@@ -6,6 +6,10 @@
     <form action="/accounts/register/" method="post">{% csrf_token %}
         {{form}}
 
+        {% if errors %}
+            {{errors}}
+        {% endif %}
+
         <input type="submit" value="Register" />
     </form>
 
