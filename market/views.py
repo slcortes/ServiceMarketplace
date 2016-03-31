@@ -79,3 +79,13 @@ def search(request):
         results = Service.objects.all().order_by('-created_date')
     return render(request, 'market/search_result.html', {'results': results})
 
+
+# Browse view
+def browse(request):
+    results = Service.objects.all().order_by('-created_date')
+    return render(request, 'market/search_result.html', {'results': results})
+
+
+
+
+

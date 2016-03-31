@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
+
 <body>
     <h1>Welcome to the Service Marketplace!</h1>
     <p>People all over the U.S. looking to hire someone!</p>
@@ -19,6 +20,8 @@
         <input type="submit" value="Search">
     </form>
     
+    <!--Browse button-->    
+    <a href="{% url 'browse' %}"><input type=button value="Browse"></a> 
     
     
 </body>
