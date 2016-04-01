@@ -1,5 +1,10 @@
 {% extends "market/base.html" %}
 
+{% block css %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
 {% block content %}
 
 	<div class="container">
@@ -17,9 +22,9 @@
         <input type="text" name="q">
         <input type="submit" value="Search">
     </form>
-    
-    <!--Browse button-->    
-    <a href="{% url 'browse' %}"><input type=button value="Browse"></a> 
+
+    <!--Browse button-->
+    <a href="{% url 'browse' %}"><input type=button value="Browse"></a>
 
 	<div class="welcomeAbout">
 		<div class="container">
@@ -38,4 +43,3 @@
 
 
 {% endblock %}
-
