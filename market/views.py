@@ -82,6 +82,12 @@ def search(request):
     # TODO: move search_results.html into market file and change path so that it finds file correctly
 
 
+# Browse view
+def browse(request):
+    results = Service.objects.all().order_by('-created_date')
+    return render(request, 'market/search_result.html', {'results': results})
+
+
 @login_required
 def service_create(request):
     args = {}
@@ -91,7 +97,7 @@ def service_create(request):
             service = form.save(commit=False)
             service.client = request.user
             service.save()
-            return HttpResponseRedirect('/search/?q=')
+            return HttpResponseRedirect('/browse/')
     else:
         form = ServiceForm()
 

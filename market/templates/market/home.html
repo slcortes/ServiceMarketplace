@@ -1,6 +1,7 @@
 {% extends "market/base.html" %}
 
 {% block content %}
+
 	<div class="container">
 		<div class="col-lg-12">
 			<div class="rectangle">
@@ -11,6 +12,14 @@
 	   		 </div>
 		</div>
 	</div>
+	 <!--Search button-->
+    <form method="GET" action="{% url 'search' %}">
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
+    
+    <!--Browse button-->    
+    <a href="{% url 'browse' %}"><input type=button value="Browse"></a> 
 
 	<div class="welcomeAbout">
 		<div class="container">
@@ -27,4 +36,6 @@
 		</div>
 	</div>
 
+
 {% endblock %}
+

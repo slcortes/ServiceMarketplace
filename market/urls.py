@@ -18,4 +18,7 @@ urlpatterns = [
 
     # Search
     url(r'^search/$', views.search, name="search"),
+    
+    # Browse
+    url(r'^browse/$', views.browse, name="browse"),
 ]
