@@ -1,5 +1,4 @@
 from django import forms
-from django.forms import ModelForm
 from market.models import Service
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -32,16 +31,15 @@ class MyRegistrationForm(UserCreationForm):
         return user
 
 
-class ServiceForm(ModelForm):
-    title = forms.CharField(max_length=100, required=True)
-    description = forms.CharField(widget=forms.Textarea)
-    starting_bid = forms.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        required=True
-    )
-    final_time = forms.CharField(max_length=20, required=True)
+class ServiceForm(forms.ModelForm):
 
     class Meta:
         model = Service
-        fields = ('title', 'description', 'starting_bid', 'final_time')
+        fields = (
+            'title',
+            'description',
+            'category',
+            'bid',
+            'final_time',
+            'location'
+        )

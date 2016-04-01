@@ -82,9 +82,19 @@ def search(request):
     # TODO: move search_results.html into market file and change path so that it finds file correctly
 
 
+@login_required
 def service_create(request):
     args = {}
+    if request.method == "POST":
+        form = ServiceForm(request.POST)
+        if form.is_valid():
+            service = form.save(commit=False)
+            service.client = request.user
+            service.save()
+            return HttpResponseRedirect('/search/?q=')
+    else:
+        form = ServiceForm()
 
     args.update(csrf(request))
-    args['form'] = ServiceForm()
+    args['form'] = form
     return render_to_response('market/service_create.html', args)

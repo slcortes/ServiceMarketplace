@@ -1,16 +1,28 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Service(models.Model):
-    service_provider = models.ForeignKey('auth.User')
-    client_username = models.CharField(max_length=50, default="username")
-    title = models.CharField(max_length=100, default="Service")
+    client= models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='service_client',
+        null=True,
+        blank=True
+    )
+    service_provider = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='service_service_providers',
+        null=True,
+        blank=True
+    )
+    title = models.CharField(max_length=100)
     description = models.TextField()
     location = models.CharField(max_length=50, default="U.S.")
     final_time = models.CharField(max_length=20, default="0")
     category = models.CharField(max_length=50, default="Other")
-    starting_bid = models.DecimalField(
+    bid = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         default=1000.00
