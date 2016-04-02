@@ -20,21 +20,22 @@
                 <h3>Open:</h3>
                 {% for service in services_open %}
                     <div class="service">
+                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
+                        <p>{{ service.description|linebreaks }}</p>
                         <div class="date">
                             <p>created: {{ service.created_date }}</p>
                         </div>
-                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
-                        <p>{{ service.description|linebreaks }}</p>
+                        <a href="{% url 'service_close' pk=service.pk %}">Close</a>
                     </div>
                 {% endfor %}
     			<h3>Closed:</h3>
                 {% for service in services_closed %}
                     <div class="service">
+                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
+                        <p>{{ service.description|linebreaks }}</p>
                         <div class="date">
                             <p>created: {{ service.created_date }}</p>
                         </div>
-                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
-                        <p>{{ service.description|linebreaks }}</p>
                     </div>
                 {% endfor %}
     		</div>

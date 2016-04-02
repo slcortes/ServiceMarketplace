@@ -7,6 +7,7 @@ urlpatterns = [
     # Service
     url(r'^service/create/$', views.service_create, name="service_create"),
     url(r'^service/(?P<pk>\d+)/$', views.service_detail, name="service_detail"),
+    url(r'^service/close/(?P<pk>\d+)/$', views.service_close, name="service_close"),
 
     # Auth URLs
     url(r'^accounts/login/$', views.login),

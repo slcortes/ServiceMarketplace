@@ -104,6 +104,12 @@ def service_detail(request, pk):
     return render(request, 'market/service_detail.html', {'service': service})
 
 
+def service_close(request, pk):
+    service = get_object_or_404(Service, pk=pk)
+    service.is_open = False
+    service.save()
+    return HttpResponseRedirect('/my_account/')
+
 
 
 ####### Reviews #######
