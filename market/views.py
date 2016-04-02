@@ -109,8 +109,8 @@ def service_detail(request, pk):
 ####### Reviews #######
 
 @login_required
-def add_review(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
+def add_review(request, username):
+    user = User.objects.get(username=username)
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -120,7 +120,7 @@ def add_review(request, user_id):
             review.author = form.cleaned_data['author']
             review.comment = form.cleaned_data['comment']
             review.save()
-            return HttpResponseRedirect(reverse('user_profile', args=(user_id,)))
+            return HttpResponseRedirect(reverse('user_profile', args=(username,)))
     else:
         form = ReviewForm()
     return render(request, 'market/add_review.html', {'form': form, 'user': user})
@@ -146,8 +146,8 @@ def my_account(request):
     )
 
 
-def user_profile(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
+def user_profile(request, username):
+    user = User.objects.get(username=username)
     reviews = Review.objects.filter(user=user).order_by('-created_date')
     return render(request, 'market/user_profile.html', {'user': user, 'reviews': reviews})
 
