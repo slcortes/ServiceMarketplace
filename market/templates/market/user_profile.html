@@ -3,6 +3,7 @@
 {% block content %}
     <h1>Entering user's profile page...</h1>
     
+    <!--User's data-->
     <div>
         <h3>{{ user.username }}</h3>
         <p>{{ user.first_name }}</p>
@@ -10,6 +11,7 @@
         <p>{{ user.email }}</p>
     </div>
     
+    <!--User's reviews-->
     <div id="account-reviews">
         <h3>{{ user.username }}'s reviews...</h3>
         {% for review in reviews %}
@@ -20,9 +22,12 @@
                 <div class="date">{{ review.created_date }}</div>
                 
             </div>
-       
-        {% endfor %}
-        
+        {% endfor %}        
+    </div>
+    
+    <!--Write a review-->
+    <div>
+        <a href='add_review'><input type=button value="Write a Review"></a>
     </div>
     
 

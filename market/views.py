@@ -3,9 +3,10 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.template.context_processors import csrf
-from market.forms import MyRegistrationForm, ServiceForm
+from market.forms import MyRegistrationForm, ServiceForm, ReviewForm
 from django.contrib.auth.models import User
 from market.models import Service, Review
+from django.core.urlresolvers import reverse
 
 
 
@@ -107,28 +108,24 @@ def service_detail(request, pk):
 
 ####### Reviews #######
 
-"""
-def review_detail(request, review_id):
-    review = get_object_or_404(Review, pk=review_id)
-    return render(request, 'market/review_detail.html', {'review': review})
-
+@login_required
 def add_review(request, user_id):
-    user = get_object_or_404(MainUser, pk=user_id)
-    form = ReviewForm(request.POST)
-    if form.is_valid():
-        rating = form.cleaned_data['rating']
-        comment = form.cleaned_data['comment']
-        author = form.cleaned_data['author']
-        review = Review()
-        review.user = user
-        review.author = author
-        review.rating = rating
-        review.comment = comment
-        review.created_date = datetime.datetime.now()
-        review.save()
-        return HttpResponseRedirect('/my_account/reviews/')
-    return render(request, 'market/profile.html', {'form': form, 'user': user})
-"""
+    user = get_object_or_404(User, pk=user_id)
+    if request.method == "POST":
+        form = ReviewForm(request.POST)        
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = user
+            review.rating = form.cleaned_data['rating']
+            review.author = form.cleaned_data['author']
+            review.comment = form.cleaned_data['comment']
+            review.save()
+            return HttpResponseRedirect(reverse('user_profile', args=(user_id,)))
+    else:
+        form = ReviewForm()
+    return render(request, 'market/add_review.html', {'form': form, 'user': user})
+            
+      
 
 
 ####### MyAccount + Users profiles #######

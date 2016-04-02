@@ -21,6 +21,9 @@ urlpatterns = [
     url(r'^my_account/$', views.my_account),
     url(r'^user/(?P<user_id>\d+)/$', views.user_profile, name="user_profile"),
     
+    # Review
+    url(r'^user/(?P<user_id>\d+)/add_review/$', views.add_review, name="add_review"),
+    
     # Search
     url(r'^search/$', views.search, name="search"),
     
