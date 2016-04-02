@@ -16,6 +16,10 @@ urlpatterns = [
     url(r'^accounts/register/$', views.register_user),
     url(r'^accounts/register_success/$', views.register_success),
 
+    # My Account
+    url(r'^my_account/$', views.my_account),
+    
+    
     # Search
     url(r'^search/$', views.search, name="search"),
     

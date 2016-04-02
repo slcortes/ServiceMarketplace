@@ -78,8 +78,6 @@ def search(request):
         # user did not enter query. return all results
         results = Service.objects.all().order_by('-created_date')
     return render(request, 'market/search_result.html', {'results': results})
-    # ^ search_results.html located in ServiceMarketplace\market\templates
-    # TODO: move search_results.html into market file and change path so that it finds file correctly
 
 
 # Browse view
@@ -104,3 +102,18 @@ def service_create(request):
     args.update(csrf(request))
     args['form'] = form
     return render_to_response('market/service_create.html', args)
+
+
+@login_required
+def my_account(request):
+    return render(request, 'market/my_account.html', {})
+
+
+
+
+
+
+
+
+
+
