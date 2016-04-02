@@ -1,5 +1,5 @@
 from django import forms
-from market.models import Service
+from market.models import Service, Review
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -32,7 +32,6 @@ class MyRegistrationForm(UserCreationForm):
 
 
 class ServiceForm(forms.ModelForm):
-
     class Meta:
         model = Service
         fields = (
@@ -43,3 +42,17 @@ class ServiceForm(forms.ModelForm):
             'final_time',
             'location'
         )
+        
+        
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = (
+            'rating',
+            'author',
+            'comment',
+        )
+        widgets = {
+            'comment': forms.Textarea(attrs={'cols': 30, 'rows': 10})
+        }
+        

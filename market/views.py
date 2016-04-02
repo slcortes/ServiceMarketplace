@@ -4,7 +4,9 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.template.context_processors import csrf
 from market.forms import MyRegistrationForm, ServiceForm
-from market.models import Service
+from django.contrib.auth.models import User
+from market.models import Service, Review
+
 
 
 
@@ -95,12 +97,54 @@ def service_create(request):
     args['form'] = form
     return render_to_response('market/service_create.html', args)
 
+
 def service_detail(request, pk):
     service = get_object_or_404(Service, pk=pk)
     return render(request, 'market/service_detail.html', {'service': service})
 
 
 
+
+####### Reviews #######
+
+"""
+def review_detail(request, review_id):
+    review = get_object_or_404(Review, pk=review_id)
+    return render(request, 'market/review_detail.html', {'review': review})
+
+def add_review(request, user_id):
+    user = get_object_or_404(MainUser, pk=user_id)
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        rating = form.cleaned_data['rating']
+        comment = form.cleaned_data['comment']
+        author = form.cleaned_data['author']
+        review = Review()
+        review.user = user
+        review.author = author
+        review.rating = rating
+        review.comment = comment
+        review.created_date = datetime.datetime.now()
+        review.save()
+        return HttpResponseRedirect('/my_account/reviews/')
+    return render(request, 'market/profile.html', {'form': form, 'user': user})
+"""
+
+
+####### MyAccount + Users profiles #######
+
+@login_required
+def my_account(request):
+    reviews = Review.objects.filter(user=request.user).order_by('-created_date')
+    return render(request, 'market/my_account.html', {'reviews': reviews})
+
+def user_profile(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    reviews = Review.objects.filter(user=user).order_by('-created_date')
+    return render(request, 'market/user_profile.html', {'user': user, 'reviews': reviews})
+
+
+        
 
 ####### Search view #######
 
@@ -127,11 +171,7 @@ def browse(request):
 
 
 
-####### My Account view #######
 
-@login_required
-def my_account(request):
-    return render(request, 'market/my_account.html', {})
 
 
 

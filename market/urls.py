@@ -17,8 +17,9 @@ urlpatterns = [
     url(r'^accounts/register/$', views.register_user),
     url(r'^accounts/register_success/$', views.register_success),
 
-    # My Account
+    # My Account + Users
     url(r'^my_account/$', views.my_account),
+    url(r'^user/(?P<user_id>\d+)/$', views.user_profile, name="user_profile"),
     
     # Search
     url(r'^search/$', views.search, name="search"),

@@ -1,18 +1,17 @@
 {% extends "market/base.html" %}
 
 {% block content %}
-    <h1>Entering account page...</h1>
+    <h1>Entering user's profile page...</h1>
     
     <div>
-        <h3>Your account's data...</h3>
+        <h3>{{ user.username }}</h3>
         <p>{{ user.first_name }}</p>
         <p>{{ user.last_name }}</p>
-        <p>{{ user.username }}</p>
         <p>{{ user.email }}</p>
     </div>
     
     <div id="account-reviews">
-        <h3>Your account's reviews...</h3>
+        <h3>{{ user.username }}'s reviews...</h3>
         {% for review in reviews %}
             <div class="review">
                
@@ -20,8 +19,10 @@
                 <p>{{ review.comment }}</p>
                 <div class="date">{{ review.created_date }}</div>
                 
-            </div>       
-        {% endfor %}        
+            </div>
+       
+        {% endfor %}
+        
     </div>
     
 
