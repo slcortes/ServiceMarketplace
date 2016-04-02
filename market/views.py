@@ -38,7 +38,7 @@ def auth_view(request):
     else:
         return HttpResponseRedirect('/accounts/invalid')
 
-    
+
 @login_required()
 def loggedin(request):
     return render_to_response(
@@ -112,7 +112,7 @@ def service_detail(request, pk):
 def add_review(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     if request.method == "POST":
-        form = ReviewForm(request.POST)        
+        form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.user = user
@@ -124,8 +124,8 @@ def add_review(request, user_id):
     else:
         form = ReviewForm()
     return render(request, 'market/add_review.html', {'form': form, 'user': user})
-            
-      
+
+
 
 
 ####### MyAccount + Users profiles #######
@@ -133,7 +133,18 @@ def add_review(request, user_id):
 @login_required
 def my_account(request):
     reviews = Review.objects.filter(user=request.user).order_by('-created_date')
-    return render(request, 'market/my_account.html', {'reviews': reviews})
+    services_open = Service.objects.filter(client=request.user, is_open=True)
+    services_closed = Service.objects.filter(client=request.user, is_open=False)
+    return render(
+        request,
+        'market/my_account.html',
+        {
+            'reviews': reviews,
+            'services_open': services_open,
+            'services_closed': services_closed
+        }
+    )
+
 
 def user_profile(request, user_id):
     user = get_object_or_404(User, pk=user_id)
@@ -141,7 +152,7 @@ def user_profile(request, user_id):
     return render(request, 'market/user_profile.html', {'user': user, 'reviews': reviews})
 
 
-        
+
 
 ####### Search view #######
 
@@ -164,18 +175,3 @@ def search(request):
 def browse(request):
     results = Service.objects.all().order_by('-created_date')
     return render(request, 'market/search_result.html', {'results': results})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Entering account page...</h1>
-    
+
     <div>
         <h3>Your account's data...</h3>
         <p>{{ user.first_name }}</p>
@@ -10,24 +10,50 @@
         <p>{{ user.username }}</p>
         <p>{{ user.email }}</p>
     </div>
-    
+
+    <div class="container">
+        <div class="row">
+    		<div class="col-lg-6">
+    			<h3>Winning bids:</h3>
+    		</div>
+            <div class="col-lg-6">
+                <h3>Open:</h3>
+                {% for service in services_open %}
+                    <div class="service">
+                        <div class="date">
+                            <p>created: {{ service.created_date }}</p>
+                        </div>
+                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
+                        <p>{{ service.description|linebreaks }}</p>
+                    </div>
+                {% endfor %}
+    			<h3>Closed:</h3>
+                {% for service in services_closed %}
+                    <div class="service">
+                        <div class="date">
+                            <p>created: {{ service.created_date }}</p>
+                        </div>
+                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
+                        <p>{{ service.description|linebreaks }}</p>
+                    </div>
+                {% endfor %}
+    		</div>
+        </div>
+	</div>
+
     <div id="account-reviews">
         <h3>Your account's reviews...</h3>
         {% for review in reviews %}
             <div class="review">
-               
+
                 <p>{{ review.rating }}/5 given by {{ review.author }}</p>
                 <p>{{ review.comment }}</p>
                 <div class="date">{{ review.created_date }}</div>
-                
-            </div>       
-        {% endfor %}        
+
+            </div>
+        {% endfor %}
     </div>
-    
+
 
 
 {% endblock %}
-
-
-
-
