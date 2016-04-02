@@ -90,13 +90,14 @@ def service_create(request):
             service = form.save(commit=False)
             service.client = request.user
             service.save()
-            return HttpResponseRedirect('/browse/')
+            return HttpResponseRedirect('/service/' + str(service.pk))
     else:
         form = ServiceForm()
 
     args.update(csrf(request))
     args['form'] = form
-    return render_to_response('market/service_create.html', args)
+    args['action'] = "Create"
+    return render_to_response('market/service_action.html', args)
 
 
 def service_detail(request, pk):
@@ -110,6 +111,21 @@ def service_close(request, pk):
     service.save()
     return HttpResponseRedirect('/my_account/')
 
+
+def service_update(request, pk=None):
+    args = {}
+    service = get_object_or_404(Service, pk=pk)
+    form = ServiceForm(request.POST or None, instance=service)
+    if request.method == "POST":
+        if form.is_valid():
+            service = form.save(commit=False)
+            service.save()
+            return HttpResponseRedirect('/service/' + pk)
+
+    args.update(csrf(request))
+    args['form'] = form
+    args['action'] = "Update"
+    return render_to_response('market/service_action.html', args)
 
 
 ####### Reviews #######

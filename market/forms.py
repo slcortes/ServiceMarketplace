@@ -42,8 +42,8 @@ class ServiceForm(forms.ModelForm):
             'final_time',
             'location'
         )
-        
-        
+
+
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
@@ -52,4 +52,3 @@ class ReviewForm(forms.ModelForm):
             'author',
             'comment',
         )
-    

@@ -2,8 +2,8 @@
 
 {% block content %}
 
-    <h2>Create Service</h2>
-    <form action="/service/create/" method="post">{% csrf_token %}
+    <h2>{{ action }} Service</h2>
+    <form action="" method="post">{% csrf_token %}
         <ul>
             {{form.as_ul}}
         </ul>
@@ -12,7 +12,6 @@
             {{errors}}
         {% endif %}
 
-        <input type="submit" value="Create" />
+        <input type="submit" value="{{ action }}" />
     </form>
-
 {% endblock %}
