@@ -11,6 +11,11 @@
         <p>{{ user.email }}</p>
     </div>
     
+    <!--Write a review-->
+    <div>
+        <a href='add_review'><input type=button value="Write a Review"></a>
+    </div>
+    
     <!--User's reviews-->
     <div id="account-reviews">
         <h3>{{ user.username }}'s reviews...</h3>
@@ -24,13 +29,6 @@
             </div>
         {% endfor %}        
     </div>
-    
-    <!--Write a review-->
-    <div>
-        <a href='add_review'><input type=button value="Write a Review"></a>
-    </div>
-    
-
 
 {% endblock %}
 
