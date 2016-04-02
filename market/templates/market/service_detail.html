@@ -1,0 +1,22 @@
+{% extends "market/base.html" %}
+
+{% block content %}
+    <div id="service">
+        <div class="date">
+            {{ service.created_date }}
+        </div>             
+        <h1>{{ service.title }}</h1>
+        <p>{{ service.description|linebreaks }}</p>
+        <p>{{ service.location }}</p>
+        <p>{{ service.final_time }}</p>
+        <p>{{ service.category }}</p>
+        <p>{{ service.bid }}</p>
+    </div>
+    
+{% endblock %}
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -7,9 +7,16 @@ from market.forms import MyRegistrationForm, ServiceForm
 from market.models import Service
 
 
+
+####### Home #######
+
 def home(request):
     return render(request, 'market/home.html', {})
 
+
+
+
+####### Login authorization #######
 
 def login(request):
     c = {}
@@ -28,7 +35,7 @@ def auth_view(request):
     else:
         return HttpResponseRedirect('/accounts/invalid')
 
-
+    
 @login_required()
 def loggedin(request):
     return render_to_response(
@@ -67,24 +74,9 @@ def register_success(request):
     return render_to_response('market/register_success.html')
 
 
-# Search view
-def search(request):
-    query = request.GET.get('q')
-    if query:
-        # user entered query
-        results = (Service.objects.filter(title__contains=query) |  \
-                   Service.objects.filter(description__contains=query)).order_by('-created_date')
-    else:
-        # user did not enter query. return all results
-        results = Service.objects.all().order_by('-created_date')
-    return render(request, 'market/search_result.html', {'results': results})
 
 
-# Browse view
-def browse(request):
-    results = Service.objects.all().order_by('-created_date')
-    return render(request, 'market/search_result.html', {'results': results})
-
+####### Services #######
 
 @login_required
 def service_create(request):
@@ -103,6 +95,39 @@ def service_create(request):
     args['form'] = form
     return render_to_response('market/service_create.html', args)
 
+def service_detail(request, pk):
+    service = get_object_or_404(Service, pk=pk)
+    return render(request, 'market/service_detail.html', {'service': service})
+
+
+
+
+####### Search view #######
+
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        # user entered query
+        results = (Service.objects.filter(title__contains=query) |  \
+                   Service.objects.filter(description__contains=query)).order_by('-created_date')
+    else:
+        # user did not enter query. return all results
+        results = Service.objects.all().order_by('-created_date')
+    return render(request, 'market/search_result.html', {'results': results})
+
+
+
+
+####### Browse view #######
+
+def browse(request):
+    results = Service.objects.all().order_by('-created_date')
+    return render(request, 'market/search_result.html', {'results': results})
+
+
+
+
+####### My Account view #######
 
 @login_required
 def my_account(request):

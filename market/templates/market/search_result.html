@@ -12,7 +12,7 @@
                         <div class="date">
                             <p>created: {{ service.created_date }}</p>
                         </div>
-                        <h1><a href="">{{ service.title }}</a></h1>
+                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
                         <p>{{ service.description|linebreaks }}</p>
                     </div>
                 {% endfor %}

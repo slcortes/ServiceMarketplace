@@ -6,6 +6,7 @@ urlpatterns = [
 
     # Service
     url(r'^service/create/$', views.service_create, name="service_create"),
+    url(r'^service/(?P<pk>\d+)/$', views.service_detail, name="service_detail"),
 
     # Auth URLs
     url(r'^accounts/login/$', views.login),
@@ -19,10 +20,13 @@ urlpatterns = [
     # My Account
     url(r'^my_account/$', views.my_account),
     
-    
     # Search
     url(r'^search/$', views.search, name="search"),
     
     # Browse
     url(r'^browse/$', views.browse, name="browse"),
 ]
+
+
+
+
