@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 class Service(models.Model):
-    client= models.ForeignKey(
+    client = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='service_client',
         null=True,
@@ -44,9 +44,14 @@ class Review(models.Model):
         (4, '4'),
         (5, '5'),
     )
+    TYPE = (
+        ('client', 'Client'),
+        ('provider', 'Provider'),
+    )
     rating = models.IntegerField(choices=RATINGS)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='review')
-    author = models.CharField(max_length=200, default="Your name")
+    account_type = models.CharField(max_length=8, choices=TYPE, default='client')
+    author = models.CharField(max_length=40, default="Your name")
     comment = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
 

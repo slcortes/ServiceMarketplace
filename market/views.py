@@ -141,6 +141,7 @@ def add_review(request, username):
             review = form.save(commit=False)
             review.user = user
             review.rating = form.cleaned_data['rating']
+            review.account_type = form.cleaned_data['account_type']
             review.author = form.cleaned_data['author']
             review.comment = form.cleaned_data['comment']
             review.save()
@@ -157,13 +158,16 @@ def add_review(request, username):
 @login_required
 def my_account(request):
     reviews = Review.objects.filter(user=request.user).order_by('-created_date')
+    reviews_clients = reviews.filter(account_type='client')
+    reviews_providers = reviews.filter(account_type='provider')
     services_open = Service.objects.filter(client=request.user, is_open=True)
     services_closed = Service.objects.filter(client=request.user, is_open=False)
     return render(
         request,
         'market/my_account.html',
         {
-            'reviews': reviews,
+            'reviews_clients': reviews_clients,
+            'reviews_providers': reviews_providers,
             'services_open': services_open,
             'services_closed': services_closed
         }
@@ -173,7 +177,16 @@ def my_account(request):
 def user_profile(request, username):
     user = User.objects.get(username=username)
     reviews = Review.objects.filter(user=user).order_by('-created_date')
-    return render(request, 'market/user_profile.html', {'user': user, 'reviews': reviews})
+    reviews_clients = reviews.filter(account_type='client')
+    reviews_providers = reviews.filter(account_type='provider')
+    return render(
+        request, 
+        'market/user_profile.html', {
+            'user': user, 
+            'reviews_clients': reviews_clients,
+            'reviews_providers': reviews_providers,
+        }
+    )
 
 
 
