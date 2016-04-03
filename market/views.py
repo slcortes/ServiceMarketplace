@@ -7,7 +7,7 @@ from market.forms import MyRegistrationForm, ServiceForm, ReviewForm
 from django.contrib.auth.models import User
 from market.models import Service, Review
 from django.core.urlresolvers import reverse
-from market.functions import is_client
+from market.functions import is_owner
 
 
 
@@ -103,7 +103,9 @@ def service_create(request):
 
 def service_detail(request, pk):
     service = get_object_or_404(Service, pk=pk)
-    return render(request, 'market/service_detail.html', {'service': service})
+    owner = is_owner(request=request, service=service)
+    return render(request, 'market/service_detail.html',
+                  {'service': service, 'is_owner': owner})
 
 
 def service_close(request, pk):
@@ -180,12 +182,14 @@ def user_profile(request, username):
     reviews = Review.objects.filter(user=user).order_by('-created_date')
     reviews_clients = reviews.filter(account_type='client')
     reviews_providers = reviews.filter(account_type='provider')
+    owner = is_owner(request=request, username=username)
     return render(
-        request, 
+        request,
         'market/user_profile.html', {
-            'user': user, 
+            'user': user,
             'reviews_clients': reviews_clients,
             'reviews_providers': reviews_providers,
+            'is_owner': owner
         }
     )
 

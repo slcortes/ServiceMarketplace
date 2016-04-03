@@ -1,22 +1,23 @@
 {% extends "market/base.html" %}
 
 {% block content %}
+
     <div id="service">
         <div class="date">
             {{ service.created_date }}
-        </div>             
+        </div>
         <h1>{{ service.title }}</h1>
         <p>{{ service.description|linebreaks }}</p>
         <p>{{ service.location }}</p>
         <p>{{ service.final_time }}</p>
         <p>{{ service.category }}</p>
         <p>{{ service.bid }}</p>
+
+        {% if is_owner %}
+            <a href="{% url 'service_update' pk=service.pk %}">Update</a>
+            <a href="{% url 'service_close' pk=service.pk %}">Close</a>
+        {% endif %}
+
     </div>
-    
+
 {% endblock %}
-
-
-
-
-
-

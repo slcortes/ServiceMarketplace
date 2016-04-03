@@ -1,10 +1,10 @@
 ####### views.py #######
 
 
-def is_client(request=None, service=None, username=None,
-              args=None, if_true=None):
+def is_owner(request=None, service=None, username=None,
+             args=None, if_true=None):
     '''
-        is_client(request, args, if_true)
+        is_owner(request, args, if_true)
 
         Args:
             request (request): request obj from view function
@@ -13,7 +13,7 @@ def is_client(request=None, service=None, username=None,
             username (str): username to compate to request.user
             args (dict): arguments being passed to template
             if_true (dict): info that are going to be added to args if
-                is_client is true
+                is_owner is true
         Returns:
             True/False
     '''
@@ -31,7 +31,7 @@ def is_client(request=None, service=None, username=None,
 
     # Add entries to args
     if args is not None:
-        args['is_client'] = result
+        args['is_owner'] = result
         if if_true is not None:
             for key, value in if_true.items():
                 args[key] = value
