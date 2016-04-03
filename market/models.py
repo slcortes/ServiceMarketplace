@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
 from django.conf import settings
 
 
@@ -36,14 +35,6 @@ class Service(models.Model):
 
 
 
-"""
-class User(settings.User ??):  # how to add to current User model?
-    def average_rating(self):
-        all_ratings = map(lambda x: x.rating, self.review_set.all())
-        return mean(all_ratings)
-"""
-
-
 
 class Review(models.Model):
     RATINGS = (
@@ -55,7 +46,7 @@ class Review(models.Model):
     )
     rating = models.IntegerField(choices=RATINGS)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='review')
-    author = models.CharField(max_length=200, default="your name")
+    author = models.CharField(max_length=200, default="Your name")
     comment = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
 

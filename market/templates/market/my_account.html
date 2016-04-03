@@ -44,15 +44,17 @@
 
     <div id="account-reviews">
         <h3>Your account's reviews...</h3>
-        {% for review in reviews %}
-            <div class="review">
-
-                <p>{{ review.rating }}/5 given by {{ review.author }}</p>
-                <p>{{ review.comment }}</p>
-                <div class="date">{{ review.created_date }}</div>
-
-            </div>
-        {% endfor %}
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review">
+                    <p>{{ review.rating }}/5 given by {{ review.author }}</p>
+                    <p>{{ review.comment }}</p>
+                    <div class="date">{{ review.created_date }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>You have no reviews.</p>
+        {% endif %}
     </div>
 
 
