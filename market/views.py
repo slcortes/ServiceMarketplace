@@ -7,6 +7,7 @@ from market.forms import MyRegistrationForm, ServiceForm, ReviewForm
 from django.contrib.auth.models import User
 from market.models import Service, Review
 from django.core.urlresolvers import reverse
+from market.functions import is_client
 
 
 
