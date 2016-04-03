@@ -3,6 +3,7 @@
 {% block content %}
     <h1>Entering account page...</h1>
 
+    <!-- Account info -->
     <div>
         <h3>Your account's data...</h3>
         <p>{{ user.first_name }}</p>
@@ -11,6 +12,7 @@
         <p>{{ user.email }}</p>
     </div>
 
+    <!-- Account services -->
     <div class="container">
         <div class="row">
     		<div class="col-lg-6">
@@ -42,18 +44,40 @@
         </div>
 	</div>
 
-    <div id="account-reviews">
-        <h3>Your account's reviews...</h3>
-        {% for review in reviews %}
-            <div class="review">
-
-                <p>{{ review.rating }}/5 given by {{ review.author }}</p>
-                <p>{{ review.comment }}</p>
-                <div class="date">{{ review.created_date }}</div>
-
-            </div>
-        {% endfor %}
-    </div>
+    <!-- Account reviews -->
+    <div class="container">
+        <h3>Your reviews...</h3>
+        <div class="row">
+    		<div class="col-lg-6">
+    			<h3>Reviews from clients:</h3>
+    			{% if reviews_clients %}        
+                    {% for review in reviews_clients %}
+                        <div class="review">               
+                            <p>{{ review.rating }}/5 given by {{ review.author }}</p>
+                            <p>{{ review.comment }}</p>
+                            <div class="date">{{ review.created_date }}</div>                
+                        </div>
+                    {% endfor %} 
+                {% else %}
+                    <p>You have no reviews from clients.</p>
+                {% endif %}
+    		</div>
+            <div class="col-lg-6">
+                <h3>Reviews from providers:</h3>
+                {% if reviews_providers %}        
+                    {% for review in reviews_providers %}
+                        <div class="review">               
+                            <p>{{ review.rating }}/5 given by {{ review.author }}</p>
+                            <p>{{ review.comment }}</p>
+                            <div class="date">{{ review.created_date }}</div>                
+                        </div>
+                    {% endfor %} 
+                {% else %}
+                    <p>You have no reviews from providers.</p>
+                {% endif %}
+            </div>   
+        </div>
+	</div>
 
 
 

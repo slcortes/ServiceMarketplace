@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Entering user's profile page...</h1>
     
-    <!--User's data-->
+    <!-- User's info -->
     <div>
         <h3>{{ user.username }}</h3>
         <p>{{ user.first_name }}</p>
@@ -11,24 +11,50 @@
         <p>{{ user.email }}</p>
     </div>
     
-    <!--Write a review-->
+    
+    <!-- Write a review -->
+    {% if user.is_authenticated %}
     <div>
         <a href='add_review'><input type=button value="Write a Review"></a>
     </div>
+    {% endif %}
     
-    <!--User's reviews-->
-    <div id="account-reviews">
+    
+    <!-- User's reviews -->
+    <div class="container">
         <h3>{{ user.username }}'s reviews...</h3>
-        {% for review in reviews %}
-            <div class="review">
-               
-                <p>{{ review.rating }}/5 given by {{ review.author }}</p>
-                <p>{{ review.comment }}</p>
-                <div class="date">{{ review.created_date }}</div>
-                
-            </div>
-        {% endfor %}        
-    </div>
+        <div class="row">
+    		<div class="col-lg-6">
+    			<h3>Reviews from clients:</h3>
+    			{% if reviews_clients %}        
+                    {% for review in reviews_clients %}
+                        <div class="review">               
+                            <p>{{ review.rating }}/5 given by {{ review.author }}</p>
+                            <p>{{ review.comment }}</p>
+                            <div class="date">{{ review.created_date }}</div>                
+                        </div>
+                    {% endfor %} 
+                {% else %}
+                    <p>{{ user.username }} has no reviews from clients.</p>
+                {% endif %}
+    		</div>
+            <div class="col-lg-6">
+                <h3>Reviews from providers:</h3>
+                {% if reviews_providers %}        
+                    {% for review in reviews_providers %}
+                        <div class="review">               
+                            <p>{{ review.rating }}/5 given by {{ review.author }}</p>
+                            <p>{{ review.comment }}</p>
+                            <div class="date">{{ review.created_date }}</div>                
+                        </div>
+                    {% endfor %} 
+                {% else %}
+                    <p>{{ user.username }} has no reviews from providers.</p>
+                {% endif %}
+            </div>   
+        </div>
+	</div>
+    
 
 {% endblock %}
 

@@ -50,5 +50,6 @@ class ReviewForm(forms.ModelForm):
         fields = (
             'rating',
             'author',
+            'account_type',
             'comment',
         )
