@@ -1,10 +1,16 @@
 {% extends "market/base.html" %}
 
+{% block css %}
+{% load staticfiles %}
+<script src="{% static 'javascript/service_detail.js'%}"></script>
+<script src="{% static 'javascript/jquery.countdown.js'%}"></script>
+{% endblock %}
+
 {% block content %}
 
     <div id="service">
         <h1>{{ service.title }}</h1>
-        
+
         <div class="date">{{ service.created_date }}</div>
         {% if is_owner %}
             <p>By: <a href="{% url 'my_account' %}">You</a></p>
@@ -14,7 +20,12 @@
 
         <p>{{ service.description|linebreaks }}</p>
         <p>{{ service.location }}</p>
-        <p>{{ service.final_time }}</p>
+        <p>{{ service.final_time}}</p>
+        <p id="final_time" style="display: none;">{{ service.final_time|date:"c" }}</p>
+        <div class="countdown">
+            Time left:
+            <span id="clock"></span>
+        </div>
         <p>{{ service.category }}</p>
         <p>{{ service.bid }}</p>
 
@@ -26,6 +37,3 @@
     </div>
 
 {% endblock %}
-
-
-
