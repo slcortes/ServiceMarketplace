@@ -1,5 +1,10 @@
 ####### views.py #######
 
+from django.db.models import Avg
+from market.models import Review
+
+
+
 
 def is_owner(request=None, service=None, username=None,
              args=None, if_true=None):
@@ -37,3 +42,21 @@ def is_owner(request=None, service=None, username=None,
                 args[key] = value
 
     return result
+
+
+
+
+def get_avg_rating(request, username, mode):
+    '''
+        get_avg_rating(request, username)
+
+        Args:
+            request (request): request object from view function
+            username (str): username to get ratings from
+            mode (str): 'client'|'provider'. reviews from clients or providers
+        Returns:
+            Float. The average rating
+    '''
+    ratings = Review.objects.filter(user=username, account_type=mode)
+    avg_rating = ratings.aggregate(Avg('rating'))
+    return format(avg_rating.get('rating__avg'), '.1f')

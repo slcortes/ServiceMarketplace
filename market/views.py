@@ -3,11 +3,12 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.template.context_processors import csrf
+from django.db.models import Avg
 from market.forms import MyRegistrationForm, ServiceForm, ReviewForm
 from django.contrib.auth.models import User
 from market.models import Service, Review
 from django.core.urlresolvers import reverse
-from market.functions import is_owner
+from market.functions import is_owner, get_avg_rating
 
 
 
@@ -156,19 +157,27 @@ def add_review(request, username):
 
 
 
+
 ####### MyAccount + Users profiles #######
 
 @login_required
 def my_account(request):
+    avg_rating_c = get_avg_rating(request=request, username=request.user, mode='client')
+    avg_rating_p = get_avg_rating(request=request, username=request.user, mode='provider')
+    
     reviews = Review.objects.filter(user=request.user).order_by('-created_date')
     reviews_clients = reviews.filter(account_type='client')
     reviews_providers = reviews.filter(account_type='provider')
+    
     services_open = Service.objects.filter(client=request.user, is_open=True)
     services_closed = Service.objects.filter(client=request.user, is_open=False)
+   
     return render(
         request,
         'market/my_account.html',
         {
+            'avg_rating_clients': avg_rating_c,
+            'avg_rating_providers': avg_rating_p,
             'reviews_clients': reviews_clients,
             'reviews_providers': reviews_providers,
             'services_open': services_open,
@@ -179,17 +188,24 @@ def my_account(request):
 
 def user_profile(request, username):
     user = User.objects.get(username=username)
+    owner = is_owner(request=request, username=username)
+    
+    avg_rating_c = get_avg_rating(request=request, username=user, mode='client')
+    avg_rating_p = get_avg_rating(request=request, username=user, mode='provider')
+    
     reviews = Review.objects.filter(user=user).order_by('-created_date')
     reviews_clients = reviews.filter(account_type='client')
     reviews_providers = reviews.filter(account_type='provider')
-    owner = is_owner(request=request, username=username)
+    
     return render(
         request,
         'market/user_profile.html', {
             'user': user,
+            'avg_rating_clients': avg_rating_c,
+            'avg_rating_providers': avg_rating_p,
             'reviews_clients': reviews_clients,
             'reviews_providers': reviews_providers,
-            'is_owner': owner
+            'is_owner': owner,
         }
     )
 

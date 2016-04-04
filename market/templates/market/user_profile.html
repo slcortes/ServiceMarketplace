@@ -27,6 +27,7 @@
     		<div class="col-lg-6">
     			<h3>Reviews from clients:</h3>
     			{% if reviews_clients %}
+                    <h4>Average Rating: {{ avg_rating_clients }}</h4>
                     {% for review in reviews_clients %}
                         <div class="review">
                             <p>{{ review.rating }}/5 given by {{ review.author }}</p>
@@ -41,6 +42,7 @@
             <div class="col-lg-6">
                 <h3>Reviews from providers:</h3>
                 {% if reviews_providers %}
+                    <h4>Average Rating: {{ avg_rating_providers }}</h4>
                     {% for review in reviews_providers %}
                         <div class="review">
                             <p>{{ review.rating }}/5 given by {{ review.author }}</p>
