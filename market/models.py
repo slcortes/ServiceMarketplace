@@ -51,7 +51,12 @@ class Review(models.Model):
     rating = models.IntegerField(choices=RATINGS)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='review')
     account_type = models.CharField(max_length=8, choices=TYPE, default='client')
-    author = models.CharField(max_length=40, default="Your name")
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='review_author',
+        null=True,
+        blank=True
+    )
     comment = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
 

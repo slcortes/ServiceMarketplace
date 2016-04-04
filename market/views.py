@@ -145,7 +145,7 @@ def add_review(request, username):
             review.user = user
             review.rating = form.cleaned_data['rating']
             review.account_type = form.cleaned_data['account_type']
-            review.author = form.cleaned_data['author']
+            review.author = request.user
             review.comment = form.cleaned_data['comment']
             review.save()
             return HttpResponseRedirect(reverse('user_profile', args=(username,)))
