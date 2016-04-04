@@ -19,7 +19,7 @@ class Service(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     location = models.CharField(max_length=50, default="U.S.")
-    final_time = models.CharField(max_length=20, default="0")
+    final_time = models.DateTimeField("Ending Time")
     category = models.CharField(max_length=50, default="Other")
     is_open = models.BooleanField(default=True)
     bid = models.DecimalField(

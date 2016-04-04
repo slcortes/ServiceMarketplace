@@ -1,5 +1,12 @@
 {% extends "market/base.html" %}
 
+{% block css %}
+    {% load staticfiles %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.11/jquery.timepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.11/jquery.timepicker.min.css">
+    <script src="{% static 'javascript/service_action.js'%}"></script>
+{% endblock %}
+
 {% block content %}
 
     <h2>{{ action }} Service</h2>

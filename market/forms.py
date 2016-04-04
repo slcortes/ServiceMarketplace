@@ -2,6 +2,7 @@ from django import forms
 from market.models import Service, Review
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.admin import widgets
 
 
 class MyRegistrationForm(UserCreationForm):
@@ -32,6 +33,9 @@ class MyRegistrationForm(UserCreationForm):
 
 
 class ServiceForm(forms.ModelForm):
+    final_time = forms.SplitDateTimeField(input_date_formats=['%m/%d/%Y'],
+                                          input_time_formats=['%H:%M%p'])
+
     class Meta:
         model = Service
         fields = (
