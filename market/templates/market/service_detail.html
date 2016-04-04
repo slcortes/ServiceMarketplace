@@ -3,10 +3,15 @@
 {% block content %}
 
     <div id="service">
-        <div class="date">
-            {{ service.created_date }}
-        </div>
         <h1>{{ service.title }}</h1>
+        
+        <div class="date">{{ service.created_date }}</div>
+        {% if is_owner %}
+            <p>By: <a href="{% url 'my_account' %}">You</a></p>
+        {% else %}
+            <p>By: <a href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
+        {% endif %}
+
         <p>{{ service.description|linebreaks }}</p>
         <p>{{ service.location }}</p>
         <p>{{ service.final_time }}</p>
@@ -21,3 +26,6 @@
     </div>
 
 {% endblock %}
+
+
+

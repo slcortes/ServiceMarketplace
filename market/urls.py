@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^accounts/register_success/$', views.register_success),
 
     # My Account + Users
-    url(r'^my_account/$', views.my_account),
+    url(r'^my_account/$', views.my_account, name="my_account"),
 
     url(r'^user/(?P<username>[\w.@+-]+)/$', views.user_profile, name="user_profile"),
 

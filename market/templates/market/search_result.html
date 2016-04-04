@@ -2,18 +2,20 @@
 
 {% block content %}
 
-    <p>Search results page...</p>
+    <h1>Search results...</h1>
 
     <div class="content container">
         <div class="row">
             <div class="col-md-8">
                 {% for service in results %}
                     <div class="service">
-                        <div class="date">
-                            <p>created: {{ service.created_date }}</p>
-                        </div>
-                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
-                        <p>{{ service.description|linebreaks }}</p>
+                        <h3><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h3>
+                        <div class="date">{{ service.created_date }}</div>
+                        {% if service.client == user %}
+                            <p>By: <a href="{% url 'my_account' %}">You</a></p>
+                        {% else %}
+                            <p>By: <a href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
