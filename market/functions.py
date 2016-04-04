@@ -59,4 +59,8 @@ def get_avg_rating(request, username, mode):
     '''
     ratings = Review.objects.filter(user=username, account_type=mode)
     avg_rating = ratings.aggregate(Avg('rating'))
-    return format(avg_rating.get('rating__avg'), '.1f')
+    
+    if avg_rating.get('rating__avg') is None:
+        return 0
+    else:
+        return format(avg_rating.get('rating__avg'), '.2f')
