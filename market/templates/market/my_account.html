@@ -1,14 +1,13 @@
 {% extends "market/base.html" %}
 
 {% block content %}
-    <h1>Entering account page...</h1>
-
+    <h1>Your account</h1>
+    
     <!-- Account info -->
     <div>
-        <h3>Your account's data...</h3>
+        <h3>{{ user.username }}</h3>
         <p>{{ user.first_name }}</p>
         <p>{{ user.last_name }}</p>
-        <p>{{ user.username }}</p>
         <p>{{ user.email }}</p>
     </div>
 
@@ -27,6 +26,7 @@
                         <div class="date">
                             <p>created: {{ service.created_date }}</p>
                         </div>
+                        <a href="{% url 'service_update' pk=service.pk %}">Update</a>
                         <a href="{% url 'service_close' pk=service.pk %}">Close</a>
                     </div>
                 {% endfor %}
@@ -54,7 +54,7 @@
                     <h4>Average Rating: {{ avg_rating_clients }}</h4>      
                     {% for review in reviews_clients %}
                         <div class="review">               
-                            <p>{{ review.rating }}/5 given by {{ review.author }}</p>
+                            <p>{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a></p>
                             <p>{{ review.comment }}</p>
                             <div class="date">{{ review.created_date }}</div>                
                         </div>
@@ -69,7 +69,7 @@
                     <h4>Average Rating: {{ avg_rating_providers }}</h4>
                     {% for review in reviews_providers %}
                         <div class="review">               
-                            <p>{{ review.rating }}/5 given by {{ review.author }}</p>
+                            <p>{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a></p>
                             <p>{{ review.comment }}</p>
                             <div class="date">{{ review.created_date }}</div>                
                         </div>
@@ -80,7 +80,6 @@
             </div>   
         </div>
 	</div>
-
 
 
 {% endblock %}

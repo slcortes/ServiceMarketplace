@@ -1,14 +1,13 @@
 {% extends "market/base.html" %}
 
 {% block content %}
-    <h1>Entering user's profile page...</h1>
+    <h1>{{ user.username }}'s profile page</h1>
 
     <!-- User's info -->
     <div>
         <h3>{{ user.username }}</h3>
         <p>{{ user.first_name }}</p>
         <p>{{ user.last_name }}</p>
-        <p>{{ user.email }}</p>
     </div>
 
 
@@ -30,7 +29,7 @@
                     <h4>Average Rating: {{ avg_rating_clients }}</h4>
                     {% for review in reviews_clients %}
                         <div class="review">
-                            <p>{{ review.rating }}/5 given by {{ review.author }}</p>
+                            <p>{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a></p>
                             <p>{{ review.comment }}</p>
                             <div class="date">{{ review.created_date }}</div>
                         </div>
@@ -45,7 +44,7 @@
                     <h4>Average Rating: {{ avg_rating_providers }}</h4>
                     {% for review in reviews_providers %}
                         <div class="review">
-                            <p>{{ review.rating }}/5 given by {{ review.author }}</p>
+                            <p>{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a></p>
                             <p>{{ review.comment }}</p>
                             <div class="date">{{ review.created_date }}</div>
                         </div>
@@ -56,6 +55,8 @@
             </div>
         </div>
 	</div>
+	
+
 
 
 {% endblock %}
