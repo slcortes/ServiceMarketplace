@@ -6,9 +6,24 @@ from django.contrib.admin import widgets
 
 
 class MyRegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(required=True, max_length=20)
-    last_name = forms.CharField(required=True, max_length=20)
+    first_name = forms.CharField(
+        required=True, max_length=20,
+        widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+    last_name = forms.CharField(
+        required=True, max_length=20,
+        widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+    username = forms.CharField(
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Username'}))
+    email = forms.EmailField(
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Email Address'}))
+    password1 = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    password2 = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Repeat Password'}))
 
     class Meta:
         model = User

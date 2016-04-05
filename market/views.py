@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.template.context_processors import csrf
 from django.db.models import Avg
@@ -26,6 +26,7 @@ def home(request):
 def login(request):
     c = {}
     c.update(csrf(request))
+    c['messages'] = messages.get_messages(request)
     return render_to_response('market/login.html', c)
 
 
@@ -38,7 +39,8 @@ def auth_view(request):
         auth.login(request, user)
         return HttpResponseRedirect('/accounts/loggedin')
     else:
-        return HttpResponseRedirect('/accounts/invalid')
+        messages.error(request, "Invalid username or password")
+        return HttpResponseRedirect('/accounts/login/')
 
 
 @login_required()
@@ -61,6 +63,8 @@ def logout(request):
 
 def register_user(request):
     args = {}
+    args.update(csrf(request))
+    args['form'] = MyRegistrationForm()
     if request.method == "POST":  # Occurs after user submits info
         form = MyRegistrationForm(request.POST)
         if form.is_valid():
@@ -68,10 +72,9 @@ def register_user(request):
             return HttpResponseRedirect('/accounts/register_success/')
         else:
             args['errors'] = form.errors
+            print(args['errors'])
+            args['form'] = form
 
-    args.update(csrf(request))
-
-    args['form'] = MyRegistrationForm()
     return render_to_response('market/register.html', args)
 
 
@@ -164,14 +167,14 @@ def add_review(request, username):
 def my_account(request):
     avg_rating_c = get_avg_rating(request=request, username=request.user, mode='client')
     avg_rating_p = get_avg_rating(request=request, username=request.user, mode='provider')
-    
+
     reviews = Review.objects.filter(user=request.user).order_by('-created_date')
     reviews_clients = reviews.filter(account_type='client')
     reviews_providers = reviews.filter(account_type='provider')
-    
+
     services_open = Service.objects.filter(client=request.user, is_open=True)
     services_closed = Service.objects.filter(client=request.user, is_open=False)
-   
+
     return render(
         request,
         'market/my_account.html',
@@ -189,14 +192,14 @@ def my_account(request):
 def user_profile(request, username):
     user = User.objects.get(username=username)
     owner = is_owner(request=request, username=username)
-    
+
     avg_rating_c = get_avg_rating(request=request, username=user, mode='client')
     avg_rating_p = get_avg_rating(request=request, username=user, mode='provider')
-    
+
     reviews = Review.objects.filter(user=user).order_by('-created_date')
     reviews_clients = reviews.filter(account_type='client')
     reviews_providers = reviews.filter(account_type='provider')
-    
+
     return render(
         request,
         'market/user_profile.html', {

@@ -9,6 +9,10 @@ html, body {
 	position:relative;
 }
 
+.navbar {
+	background: #2C3E50;
+}
+
 /*
 #header {
 	background:#ededed;
@@ -20,7 +24,7 @@ html, body {
 }*/
 
 #footer {
-	background:#1a0000; 
+	background:#1a0000;
 	width:100%;
 	height:50px;
 	position:absolute;

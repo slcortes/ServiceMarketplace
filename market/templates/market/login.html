@@ -1,18 +1,36 @@
 {% extends 'market/base.html' %}
 
+{% block css %}
+{% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
 {% block content %}
 
-    {% if form.error %}
-        <p class="error">Invalid username or password</p>
-    {% endif %}
+	<div class="grandParentContainer">
+		<div class="parentContainer">
 
-    <form action="/accounts/auth/" method="post">{% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" name="username" value="" id="username">
-        <label for="password">Password:</label>
-        <input type="password" name="password" value="" id="password">
+			<form action="/accounts/auth/" method="post" id="login">{% csrf_token %}
+				<h1>Login</h1>
+				<div>
+			        <input type="text" name="username" value="" id="username"  placeholder="Username">
+			        <input type="password" name="password" value="" id="password" placeholder="Password">
+			        <br>
 
-        <input type="submit" value="Sign in">
-    </form>
+					{% if messages %}
+					    {% for message in messages %}
+							<p class="errors">{{ message }}</p>
+					    {% endfor %}
+					{% endif %}
+
+					{% if error %}
+				        <p class="error">Invalid username or password</p>
+				    {% endif %}
+
+			        <input type="submit" value="Sign In" id="submit">
+			    </div>
+			</form>
+		</div>
+	</div>
 
 {% endblock %}

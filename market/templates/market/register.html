@@ -1,16 +1,25 @@
 {% extends "market/base.html" %}
 
+{% block css %}
+{% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
 {% block content %}
 
-    <h2>Register</h2>
-    <form action="/accounts/register/" method="post">{% csrf_token %}
-        {{form}}
+<div class="grandParentContainer">
+	<div class="parentContainer">
+        <form action="/accounts/register/" method="post" id="form">{% csrf_token %}
+            <h1>Register</h1>
 
-        {% if errors %}
-            {{errors}}
-        {% endif %}
+            {% for field in form %}
+                {{ field }}
+                <p class="errors">{{ field.errors|striptags }}</p>
+            {% endfor %}
 
-        <input type="submit" value="Register" />
-    </form>
+            <input type="submit" value="Register" id="submit"/>
+        </form>
+    </div>
+</div>
 
 {% endblock %}
