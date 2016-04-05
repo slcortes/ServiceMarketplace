@@ -2,6 +2,7 @@
 
 from django.db.models import Avg
 from market.models import Review
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
@@ -64,3 +65,31 @@ def get_avg_rating(request, username, mode):
         return 0
     else:
         return format(avg_rating.get('rating__avg'), '.2f')
+    
+    
+    
+    
+def paginate(request, objects_list, per_page=1):
+    '''
+        paginate(request, objects_list, per_page)
+
+        Args:
+            request (request): request object from view function
+            objects_list (list/tuple/QuerySet...): a sliceable object with a count() or __len__() methods
+            per_page (int): max number of objects to be displayed per page. default is 1
+        Returns:
+            Page. a Page object with given page index (i.e. paginator.page(1) will return a Page obj with index/page 1)
+    '''
+    paginator = Paginator(objects_list, per_page)  
+        
+    page = request.GET.get('page', '1')
+    try:
+        objects = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        objects = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        objects = paginator.page(paginator.num_pages)
+
+    return objects
