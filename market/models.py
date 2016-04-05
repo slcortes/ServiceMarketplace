@@ -62,3 +62,8 @@ class Review(models.Model):
 
     def __str__(self):
         return self.comment
+    
+    class Meta:
+        permissions = (
+            ('can_add_review', 'can_add_review'),
+        )

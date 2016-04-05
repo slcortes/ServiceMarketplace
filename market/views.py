@@ -3,12 +3,13 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template.context_processors import csrf
 from django.contrib import auth, messages
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, Permission
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, render_to_response, get_object_or_404
 from market.models import Service, Review
 from market.forms import MyRegistrationForm, ServiceForm, ReviewForm
-from market.functions import is_owner, get_avg_rating, paginate
+from market.functions import is_owner, get_avg_rating, paginate, add_permission
+
 
 
 
@@ -88,7 +89,7 @@ def register_success(request):
 
 ####### Services #######
 
-@login_required
+@login_required 
 def service_create(request):
     args = {}
     if request.method == "POST":
@@ -143,8 +144,9 @@ def service_update(request, pk=None):
 ####### Reviews #######
 
 @login_required
+@permission_required('market.can_add_review', raise_exception=True)  # if permision denied, user will be redirected to 403 (HTTP Forbidden) view
 def add_review(request, username):
-    user = User.objects.get(username=username)
+    user = User.objects.get(username=username)    
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -167,9 +169,9 @@ def add_review(request, username):
 ####### MyAccount + Users profiles #######
 
 @login_required
-def my_account(request):
-    avg_rating_c = get_avg_rating(request=request, username=request.user, mode='client')
-    avg_rating_p = get_avg_rating(request=request, username=request.user, mode='provider')
+def my_account(request):    
+    avg_rating_c = get_avg_rating(username=request.user, mode='client')
+    avg_rating_p = get_avg_rating(username=request.user, mode='provider')
 
     reviews = Review.objects.filter(user=request.user).order_by('-created_date')
     reviews_clients = reviews.filter(account_type='client')
@@ -200,9 +202,9 @@ def user_profile(request, username):
 
     owner = is_owner(request=request, username=username)
 
-    avg_rating_c = get_avg_rating(request=request, username=user, mode='client')
-    avg_rating_p = get_avg_rating(request=request, username=user, mode='provider')
-
+    avg_rating_c = get_avg_rating(username=user, mode='client')
+    avg_rating_p = get_avg_rating(username=user, mode='provider')
+    
     reviews = Review.objects.filter(user=user).order_by('-created_date')
     reviews_clients = reviews.filter(account_type='client')
     reviews_providers = reviews.filter(account_type='provider')
