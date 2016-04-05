@@ -19,9 +19,10 @@ urlpatterns = [
     url(r'^accounts/register/$', views.register_user),
     url(r'^accounts/register_success/$', views.register_success),
 
-    # My Account + Users
+    # My Account 
     url(r'^my_account/$', views.my_account, name="my_account"),
 
+    # User profiles
     url(r'^user/(?P<username>[\w.@+-]+)/$', views.user_profile, name="user_profile"),
 
     # Review

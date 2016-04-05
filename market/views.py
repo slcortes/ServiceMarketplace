@@ -177,8 +177,7 @@ def my_account(request):
 
     return render(
         request,
-        'market/my_account.html',
-        {
+        'market/my_account.html', {
             'avg_rating_clients': avg_rating_c,
             'avg_rating_providers': avg_rating_p,
             'reviews_clients': reviews_clients,
@@ -191,6 +190,11 @@ def my_account(request):
 
 def user_profile(request, username):
     user = User.objects.get(username=username)
+
+    # redirect to user's my_account if s(he)'s vising his/her profile
+    if request.user == user:
+        return HttpResponseRedirect('/my_account/')
+
     owner = is_owner(request=request, username=username)
 
     avg_rating_c = get_avg_rating(request=request, username=user, mode='client')
