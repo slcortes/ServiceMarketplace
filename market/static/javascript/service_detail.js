@@ -34,6 +34,8 @@ $(document).ready(function() {
 
     });
 
+    bidding();
+
 });
 
 //Add 0 before month and date if it is one digit
@@ -42,4 +44,51 @@ function dateLengthOne(date) {
         return '0' + date;
     }
     return date;
+}
+
+function bidding() {
+
+    //Construct Firebase url
+    var myDataRef = new Firebase('https://torrid-inferno-5445.firebaseio.com/' + window.location.pathname);
+
+    //Get entered bid
+    $('#submit').click(function (e) {
+        checkAndPushBid();
+    });
+    $('#bidInput').keypress(function (e) {
+      if (e.keyCode == 13) {
+        checkAndPushBid();
+      }
+    });
+
+    //Watch for bids and display new bid
+    myDataRef.on('child_added', function(snapshot) {
+      var message = snapshot.val();
+      displayBid(message.bid);
+    });
+
+    //Check and push bid
+    function checkAndPushBid(bid) {
+        var submitted_bid = $('#bidInput').val();
+        submitted_bid = parseFloat(submitted_bid, 10);
+        
+        var current_bid = $('#current_bid').text();
+        current_bid = parseFloat(current_bid, 10);
+
+        if ((submitted_bid < current_bid) && submitted_bid > 0) {
+            myDataRef.push({bid: submitted_bid});
+            $('#bidInput').val('');
+            $("#error_bid").text('');
+        } else if (submitted_bid < 0){
+            $("#error_bid").text('Enter a bid greater than $0!');
+        } else {
+            $("#error_bid").text('Enter a bid lower than ' + current_bid + '!');
+        }
+    }
+
+    //Display new bids
+    function displayBid(bid) {
+      $('#current_bid').text(bid);
+    };
+
 }

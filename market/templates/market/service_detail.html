@@ -4,6 +4,7 @@
 {% load staticfiles %}
 <script src="{% static 'javascript/service_detail.js'%}"></script>
 <script src="{% static 'javascript/jquery.countdown.js'%}"></script>
+ <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
 {% endblock %}
 
 {% block content %}
@@ -27,7 +28,12 @@
             <span id="clock"></span>
         </div>
         <p>{{ service.category }}</p>
-        <p>{{ service.bid }}</p>
+        <div id="bid">
+            $<span id="current_bid">{{ service.bid }}</span>
+            <input type='text' id='bidInput' placeholder='Bid'>
+            <input type='submit' id='submit' name='submit'>
+            <p id="error_bid" style="color: red;"></p>
+        </div>
 
         {% if is_owner %}
             <a href="{% url 'service_update' pk=service.pk %}">Update</a>
