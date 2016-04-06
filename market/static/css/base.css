@@ -13,15 +13,9 @@ html, body {
 	background: #2C3E50;
 }
 
-/*
-#header {
-	background:#ededed;
-	padding:10px;
-}
-
 #content {
-	padding-bottom:100px;
-}*/
+	padding-bottom: 60px;
+}
 
 #footer {
 	background:#1a0000;

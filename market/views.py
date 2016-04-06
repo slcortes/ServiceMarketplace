@@ -89,7 +89,7 @@ def register_success(request):
 
 ####### Services #######
 
-@login_required 
+@login_required
 def service_create(request):
     args = {}
     if request.method == "POST":
@@ -146,7 +146,7 @@ def service_update(request, pk=None):
 @login_required
 @permission_required('market.can_add_review', raise_exception=True)  # if permision denied, user will be redirected to 403 (HTTP Forbidden) view
 def add_review(request, username):
-    user = User.objects.get(username=username)    
+    user = User.objects.get(username=username)
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -169,7 +169,7 @@ def add_review(request, username):
 ####### MyAccount + Users profiles #######
 
 @login_required
-def my_account(request):    
+def my_account(request):
     avg_rating_c = get_avg_rating(username=request.user, mode='client')
     avg_rating_p = get_avg_rating(username=request.user, mode='provider')
 
@@ -204,7 +204,7 @@ def user_profile(request, username):
 
     avg_rating_c = get_avg_rating(username=user, mode='client')
     avg_rating_p = get_avg_rating(username=user, mode='provider')
-    
+
     reviews = Review.objects.filter(user=user).order_by('-created_date')
     reviews_clients = reviews.filter(account_type='client')
     reviews_providers = reviews.filter(account_type='provider')
@@ -236,14 +236,13 @@ def search(request):
     else:
         # user did not enter query. return all results
         results_list = Service.objects.all().order_by('-created_date')
-        
-    services = paginate(request, results_list, 3)   # Show 3 results per page
+
+    services = paginate(request, results_list, 8)   # Show 3 results per page
 
     return render(request, 'market/search_result.html', {"services": services})
-   
-    
+
+
 def browse(request):
     results_list = Service.objects.all().order_by('-created_date')
-    services = paginate(request, results_list, 3)
+    services = paginate(request, results_list, 8)
     return render(request, 'market/search_result.html', {'services': services})
-

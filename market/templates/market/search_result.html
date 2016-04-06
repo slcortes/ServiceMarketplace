@@ -4,14 +4,14 @@
 
     <h1>Search results</h1>
 
-    <div class="content container">
+    <div class="container">
       <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 {% for service in services %}
                     <div class="service">
                         <h3><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h3>
                         <div class="date">{{ service.created_date }}</div>
-                        
+
                         {% if service.client == user %}
                             <p>By: <a href="{% url 'my_account' %}">You</a></p>
                         {% else %}
@@ -21,22 +21,21 @@
                 {% endfor %}
            </div>
         </div>
-    </div>
-    
-    <div class="pagination">
-        <span class="step-links">
-            {% if services.has_previous %}
-                <a href="?page={{ services.previous_page_number }}">previous</a>
-            {% endif %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if services.has_previous %}
+                    <a href="?page={{ services.previous_page_number }}">previous</a>
+                {% endif %}
 
-            <span class="current">
-                &lt;Page {{ services.number }} of {{ services.paginator.num_pages }}&gt;
-            </span>            
+                <span class="current">
+                    &lt;Page {{ services.number }} of {{ services.paginator.num_pages }}&gt;
+                </span>
 
-            {% if services.has_next %}
-                <a href="?page={{ services.next_page_number }}">next</a>
-            {% endif %}
-        </span>
+                {% if services.has_next %}
+                    <a href="?page={{ services.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
-    
+
 {% endblock %}
