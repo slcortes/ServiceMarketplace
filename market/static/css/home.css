@@ -1,55 +1,23 @@
-body{
-	font-family: Lato;
-	text-align: center;
-	padding-top: 17%;
-	background: url(../Images/triangular.png);	
+.jumbotron {
+	background-image: url(../Images/black_wood.png);
+	color: #FFF;
+	background-attachment: repeat;
+	min-height: 600px;
+	min-width: 500px;
+	height: 90vh;
+	margin: 0;
+	padding-top: 170px;
 }
 
-h1 {
-    color: white;
-    font-size: 3em;
-    font-weight: 700;
-  	text-shadow: 0 0 4px #000000, 2px 2px 4px #000000;
-}
-
-button{
-	height: 50px;
-	width: 150px;
-	font-size: 50px;
-}
-
-#welcomeShortDesc{
-	font-size: 20px;
+#intro {
 	color: white;
-  	text-shadow: 0 0 4px #000000, 2px 2px 4px #000000;
+	vertical-align: middle;
 }
 
-hr{
-	width: 600px;
-	border-top: 1px solid #f8f8f8;
-	border-bottom: 1px solid rgba(0,0,0,0.2);
-}
-
-.rectangle{
-	background-color: rgba(0,0,0,0.5);
-	border-radius: 20px;
-	padding-top: 5px;
-	padding-bottom: 30px;
-	box-shadow: 2px 2px 6px rgba(0,0,0,.5);
-
-}
-
-.welcomeAbout{
-	margin-top: 21%;
-	font-size: 20px;
-	font-family: Lato;
-	background-color: white;
-}
-
-.aboutTitle{
-	font-weight: 100;
-	text-align: left;
-	color: black;
-	font-family: Lato;
-	text-shadow: none;
+#sign_up {
+	font-size: 1.7em;
+	width:140px;
+	height:45px;
+	/*background: #2C3E50;*/
+	border: 0;
 }

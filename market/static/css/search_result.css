@@ -1,0 +1,19 @@
+.pagination a, .pagination a:hover, input[type="submit"], input[type="submit"]:hover {
+    border: 1px solid #000000;
+		color: #000000;
+}
+
+.pagination a, .pagination a:hover {
+    font-size: .813em;
+    font-weight: 400;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 0;
+    padding: 10px 15px;
+    border-radius: 0;
+    overflow: visible;
+    letter-spacing: 2px;
+    background-color: transparent;
+}

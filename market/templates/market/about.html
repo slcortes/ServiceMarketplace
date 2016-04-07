@@ -1,0 +1,114 @@
+{% extends "market/base.html" %}
+
+{% block css %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid" style="background: #f5f5f5;">
+    <h1 style="color: #2C3E50; text-align: center; margin-top: 10px;">
+        About Us
+    </h1>
+</div>
+<div class="container" style="margin-top: 20px;">
+    <div class="row" style="color: #2C3E50;">
+            <div class="col-md-12 text-center">
+                <p>
+                    Welcome to our website!<br>
+                    We are a team of students from Cal Poly Pomona who created this website for MISSA's 2016 IT Competition.
+                </p>
+            </div>
+    </div>
+</div>
+<br>
+
+<div class="container" style="padding-bottom: 100px;">
+    <h3>Meet the Team!</h3>
+
+    <br>
+
+    <div class="row">
+        <div class="col-sm-3 col-sm-3">
+            <img class="img-thumbnail img-responsive photo"
+            src="https://trello-avatars.s3.amazonaws.com/bf66148e8a140e2519e381b61f974cdd/original.png"/>
+        </div>
+        <div class="col-md-9 col-sm-9">
+            <p>
+                <br>
+                <h4><strong>Anthony Lackey</strong></h4>
+                <em>Back-End Developer</em>
+                <br>
+                <br>
+                Major: Computer Science
+                <br>
+            </p>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-md-3 col-sm-3">
+            <img class="img-thumbnail img-responsive photo"
+            src="https://trello-avatars.s3.amazonaws.com/5e7048104a559e9f2c7723299b3a8ab1/original.png" />
+        </div>
+        <div class="col-md-9 col-sm-9">
+            <p>
+                <br>
+                <h4><strong>Jerome Francisco</strong></h4>
+                <em>Front-End Developer</em>
+                <br>
+                <br>
+                Major: Business - Computer Information Systems
+                <br>
+            </p>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-md-3 col-sm-3">
+            <img class="img-thumbnail img-responsive photo"
+            src="https://trello-avatars.s3.amazonaws.com/aa222550eb188d892cdba5122f15f065/original.png" />
+        </div>
+        <div class="col-md-9 col-sm-9">
+            <p>
+                <br>
+                <h4><strong>Nelly Liu Peng</strong></h4>
+                <em>Back-End Developer</em>
+                <br>
+                <br>
+                Major: Computer Science<br>
+                Minor: Business - Computer Information Systems
+                <br>
+            </p>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <div class="col-md-3">
+            <img class="img-thumbnail img-responsive photo"
+            src="http://i128.photobucket.com/albums/p179/icy_vapor/IMG_0226_zpsftaxbzx7.jpg" />
+        </div>
+        <div class="col-md-9">
+            <p>
+                <br>
+                <h4><strong>Stephanie Cortes</strong></h4>
+                <em>Front-End Developer</em>
+                <br>
+                <br>
+                Major: Business - Computer Information Systems
+                <br>
+            </p>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
