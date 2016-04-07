@@ -2,26 +2,83 @@
 
 {% block content %}
 
-    <h1>Search results</h1>
-
-    <div class="container">
-      <div class="row">
-            <div class="col-md-12">
-                {% for service in services %}
-                    <div class="service">
-                        <h3><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h3>
-                        <div class="date">{{ service.created_date }}</div>
-
-                        {% if service.client == user %}
-                            <p>By: <a href="{% url 'my_account' %}">You</a></p>
-                        {% else %}
+    <h1 style="text-align:center; padding-bottom:10px;">Search results</h1>     
+     
+    {% for service in services %}
+        {% cycle "1" "2" "3" as section silent %}
+        
+        {% if section == "1" %}
+                    
+        <div class="container" id="browse">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <div class="caption text-center">
+                            <h4><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h4>
+                            <p>{{ service.description|truncatechars:40 }}</p>
+                                       
+                            {% if service.client == user %}
+                                <p>By: <a href="{% url 'my_account' %}">You</a></p>
+                            {% else %}
                             <p>By: <a href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
-                        {% endif %}
+                            {% endif %}
+                                   
+                            <div class="date">{{ service.created_date }}</div>
+                            <p>{{ service.location }}</p>
+                            <button class="btn btn-sm btn-primary">Bid Now</button>
+                        </div>
                     </div>
-                {% endfor %}
-           </div>
+                </div>
+                           
+                {% elif section == "2" %}
+                   
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <div class="caption text-center">
+                            <h4><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h4>
+                            <p>{{ service.description|truncatechars:40 }}</p>
+                                       
+                            {% if service.client == user %}
+                                <p>By: <a href="{% url 'my_account' %}">You</a></p>
+                            {% else %}
+                                <p>By: <a href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
+                            {% endif %}
+                                   
+                            <div class="date">{{ service.created_date }}</div>
+                            <p>{{ service.location }}</p>
+                            <button class="btn btn-sm btn-primary">Bid Now</button>
+                        </div>
+                    </div>
+                </div>
+                             
+                {% elif section == "3" %}
+                              
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <div class="caption text-center">
+                            <h4><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h4>
+                            <p>{{ service.description|truncatechars:40 }}</p>
+                                       
+                            {% if service.client == user %}
+                                <p>By: <a href="{% url 'my_account' %}">You</a></p>
+                            {% else %}
+                                <p>By: <a href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
+                            {% endif %}
+                                   
+                            <div class="date">{{ service.created_date }}</div>
+                            <p>{{ service.location }}</p>
+                            <button class="btn btn-sm btn-primary">Bid Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>               
         </div>
-        <div class="pagination">
+        
+        {% endif %}
+    {% endfor %}
+                   
+    <div class="container">
+        <div class="pagination" style="float:right">
             <span class="step-links">
                 {% if services.has_previous %}
                     <a href="?page={{ services.previous_page_number }}">previous</a>
@@ -37,5 +94,6 @@
             </span>
         </div>
     </div>
+
 
 {% endblock %}
