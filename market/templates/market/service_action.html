@@ -5,20 +5,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.11/jquery.timepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.11/jquery.timepicker.min.css">
     <script src="{% static 'javascript/service_action.js'%}"></script>
+    <link rel="stylesheet" href="{% static 'css/service_action.css' %}">
 {% endblock %}
 
 {% block content %}
 
-    <h2>{{ action }} Service</h2>
-    <form action="" method="post">{% csrf_token %}
-        <ul>
-            {{form.as_ul}}
-        </ul>
 
-        {% if errors %}
-            {{errors}}
-        {% endif %}
+<div class="container">
+    <div class="myform">
+        <h2><strong>{{ action }} Service</strong></h2>
+        <br>
+        <form action="" method="post">{% csrf_token %}
+            {% for field in form %}
+              {{ field.label_tag }}
+              <br>
+              {{ field }}
+              <br>
+            {% endfor %}
 
-        <input type="submit" value="{{ action }}" />
-    </form>
+            {% if errors %}
+                {{errors}}
+            {% endif %}
+
+            <br>
+
+            <input type="submit" id="submit" value="{{ action }}" class="btn btn-success"/>
+        </form>
+
+    </div>
+</div>
+
+
 {% endblock %}

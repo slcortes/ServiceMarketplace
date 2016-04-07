@@ -17,10 +17,12 @@ from market.functions import is_owner, get_avg_rating, paginate, add_permission
 ####### Home #######
 
 def home(request):
-    return render(request, 'market/home.html', {})
+    return render(request, 'market/home.html')
 
 
-
+####### About #######
+def about(request):
+    return render(request, 'market/about.html')
 
 
 ####### Login authorization #######
@@ -110,7 +112,7 @@ def service_create(request):
     args.update(csrf(request))
     args['form'] = form
     args['action'] = "Create"
-    return render_to_response('market/service_action.html', args)
+    return render(request, 'market/service_action.html', args)
 
 
 def service_detail(request, pk):
@@ -120,6 +122,7 @@ def service_detail(request, pk):
                   {'service': service, 'is_owner': owner})
 
 
+@login_required
 def service_close(request, pk):
     service = get_object_or_404(Service, pk=pk)
     service.is_open = False
@@ -127,7 +130,8 @@ def service_close(request, pk):
     return HttpResponseRedirect('/my_account/')
 
 
-def service_update(request, pk=None):
+@login_required
+def service_update(request, pk):
     args = {}
     service = get_object_or_404(Service, pk=pk)
     form = ServiceForm(request.POST or None, instance=service)
@@ -140,7 +144,7 @@ def service_update(request, pk=None):
     args.update(csrf(request))
     args['form'] = form
     args['action'] = "Update"
-    return render_to_response('market/service_action.html', args)
+    return render(request, 'market/service_action.html', args)
 
 
 # Give permission to review once bid

@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
+    url(r'^about/$', views.about, name='about'),
 
     # Service
     url(r'^service/create/$', views.service_create, name="service_create"),
