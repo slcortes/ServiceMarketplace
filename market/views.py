@@ -237,12 +237,12 @@ def search(request):
         # user did not enter query. return all results
         results_list = Service.objects.all().order_by('-created_date')
 
-    services = paginate(request, results_list, 8)   # Show 3 results per page
+    services = paginate(request, results_list, 9)   # Show 9 results per page
 
     return render(request, 'market/search_result.html', {"services": services})
 
 
 def browse(request):
     results_list = Service.objects.all().order_by('-created_date')
-    services = paginate(request, results_list, 8)
+    services = paginate(request, results_list, 9)
     return render(request, 'market/search_result.html', {'services': services})
