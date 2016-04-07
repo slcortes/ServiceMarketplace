@@ -1,0 +1,33 @@
+
+.review {
+    padding: 10px 0;
+    border-top: 1px solid #bbb;
+}
+
+.review-column {
+    border-radius: 5px;
+    border: 1px solid #888;
+    padding: 0 20px;
+    margin: 10px 0;
+}
+
+.rating {
+    font-size: 1.3em;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.6em;
+}
+
+.profile-info {
+    background-image: url(../Images/mountains.jpg);
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.5em;
+}
+
