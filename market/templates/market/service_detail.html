@@ -14,14 +14,15 @@
 
         <div class="date">{{ service.created_date }}</div>
         {% if is_owner %}
+            <p id="owner" style="display: none;">{{ service.client }}</p>
             <p>By: <a href="{% url 'my_account' %}">You</a></p>
         {% else %}
-            <p>By: <a href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
+            <p>By: <a id="owner" href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
         {% endif %}
 
         <p>{{ service.description|linebreaks }}</p>
         <p>{{ service.location }}</p>
-        <p>{{ service.final_time}}</p>
+
         <p id="final_time" style="display: none;">{{ service.final_time|date:"c" }}</p>
         <div class="countdown">
             Time left:

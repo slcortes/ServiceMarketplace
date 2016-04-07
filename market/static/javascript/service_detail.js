@@ -67,20 +67,51 @@ function bidding() {
       displayBid(message.bid);
     });
 
+
+
     //Check and push bid
     function checkAndPushBid(bid) {
+        var invalid_format = false
+
         var submitted_bid = $('#bidInput').val();
-        submitted_bid = parseFloat(submitted_bid, 10);
-        
+        var submitted_bid_split = submitted_bid.split(".");
+        if (submitted_bid_split.length == 2) {
+            submitted_bid = submitted_bid_split[0] + "." +
+            submitted_bid_split[1].substring(0,2);
+        } else {
+            invalid_format = true;
+        }
+
         var current_bid = $('#current_bid').text();
         current_bid = parseFloat(current_bid, 10);
+        submitted_bid = parseFloat(submitted_bid, 10);
 
-        if ((submitted_bid < current_bid) && submitted_bid > 0) {
+        if ((submitted_bid < current_bid) && submitted_bid > 0 &&
+             !invalid_format) {
+
+            //Check if a zero needs to be added to the end
+            submitted_bid_split = String(submitted_bid).split(".");
+            if (submitted_bid_split[1].length == 1) {
+                submitted_bid = submitted_bid_split[0] + "." +
+                addZeroToEnd(submitted_bid_split[1]);
+            }
+
+            //Send bid
             myDataRef.push({bid: submitted_bid});
+
             $('#bidInput').val('');
             $("#error_bid").text('');
+
+            //Add permission that they can review
+            $.ajax({
+                method: "GET",
+                url: "/bidded/?username=" + $("#owner").text(),
+                dataType: "json"
+            });
         } else if (submitted_bid < 0){
             $("#error_bid").text('Enter a bid greater than $0!');
+        } else if (invalid_format){
+            $("#error_bid").text('Invalid Format!');
         } else {
             $("#error_bid").text('Enter a bid lower than ' + current_bid + '!');
         }
@@ -90,5 +121,10 @@ function bidding() {
     function displayBid(bid) {
       $('#current_bid').text(bid);
     };
+
+    //Add zero to .x
+    function addZeroToEnd(decimal) {
+        return decimal + '0';
+    }
 
 }

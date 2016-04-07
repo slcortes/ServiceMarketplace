@@ -1,5 +1,5 @@
 from django.db.models import Avg
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template.context_processors import csrf
 from django.contrib import auth, messages
@@ -24,11 +24,21 @@ def home(request):
 
 
 ####### Login authorization #######
-
 def login(request):
     c = {}
     c.update(csrf(request))
-    c['messages'] = messages.get_messages(request)
+
+    # check if error message exists
+    site_messages = messages.get_messages(request)
+    for message in site_messages:
+        if message.tags == 'error':
+            c['error'] = message.message
+
+    # Get redirextion url if redirect to this page
+    redirect_url = request.GET.get('next', False)
+    if redirect_url:
+        messages.info(request, redirect_url)
+
     return render_to_response('market/login.html', c)
 
 
@@ -37,30 +47,25 @@ def auth_view(request):
     password = request.POST.get('password', '')
     user = auth.authenticate(username=username, password=password)
 
+    site_messages = messages.get_messages(request)
+
     if user is not None:
         auth.login(request, user)
-        return HttpResponseRedirect('/accounts/loggedin')
+
+        # Redirect to redirected from url
+        for message in site_messages:
+            return HttpResponseRedirect(message.message)
+
+        return HttpResponseRedirect('/browse/')
     else:
         messages.error(request, "Invalid username or password")
         return HttpResponseRedirect('/accounts/login/')
 
 
 @login_required()
-def loggedin(request):
-    return render_to_response(
-        'market/loggedin.html',
-        {'username': request.user.username}
-    )
-
-
-def invalid_login(request):
-    return render_to_response('market/invalid_login.html')
-
-
-@login_required()
 def logout(request):
     auth.logout(request)
-    return render_to_response('market/logout.html')
+    return HttpResponseRedirect('/')
 
 
 def register_user(request):
@@ -138,6 +143,11 @@ def service_update(request, pk=None):
     return render_to_response('market/service_action.html', args)
 
 
+# Give permission to review once bid
+def bidded(request):
+    username = request.GET.get('username')
+    add_permission(username, 'can_add_review')
+    return HttpResponse(username + " bidded")
 
 
 

@@ -17,11 +17,11 @@
 			        <input type="password" name="password" value="" id="password" placeholder="Password">
 			        <br>
 
-					{% if messages %}
-					    {% for message in messages %}
-							<p class="errors">{{ message }}</p>
-					    {% endfor %}
-					{% endif %}
+					<!-- {% if messages %}
+					    {% for message in messages %} -->
+							<p class="errors">{{ error }}</p>
+					    <!-- {% endfor %}
+					{% endif %} -->
 
 					{% if error %}
 				        <p class="error">Invalid username or password</p>
