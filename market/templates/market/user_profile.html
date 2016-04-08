@@ -7,76 +7,95 @@
 
 
 {% block content %}
-   
+
     <div class="container">
         <h1>{{ user.username }}'s profile page</h1>
 
         <!-- User's info -->
         <div class="profile-info">
-            <h3>{{ user.username }}</h3>
+
+            <img class="img-circle" src="https://cdn0.vox-cdn.com/images/verge/default-avatar.v9899025.gif" style="height: 175px; width: 175px; border: 2px solid black">
+            <!-- <input type="file" onchange="readURL(this);"/>
+                <img id="blah" src="#" alt="your image"/> -->
+            <h3 style="color: white; margin-top: 10px"><b>{{ user.username }}</b></h3>
+            <!-- <h4 style="color:white">Location: <br>U.S.</h4> -->
+            <!-- <h4>Average User Rating: <br><span style="color: #ffff1a"><b>0/10</b></span></h4> -->
             <p>{{ user.first_name }}</p>
             <p>{{ user.last_name }}</p>
 
             <!-- Write a review -->
             {% if user.is_authenticated and not is_owner %}
-            <div>
-                <a href='add_review'><input type=button value="Write a Review"></a>
-            </div>
+                <div>
+                    <a href='add_review'><input id="reviewButton" type=button value="Write a Review" style="color: white; background-color: #b30000; border: none;"></a>
+                </div>
             {% endif %}
-        
+
         </div>
 
+        <!-- <div class="description">
+            <div class="descInfo">
+            <h1>About Me</h1>
+            <p>Bacon ipsum dolor amet beef andouille qui, tri-tip deserunt tempor ex aliquip. Beef ribs commodo t-bone, ham hock tongue alcatra aliquip drumstick irure elit turducken meatball. Pariatur non velit flank nostrud excepteur. Esse lorem enim tempor exercitation aute cupim laboris salami alcatra cow. Spare ribs t-bone shankle ullamco est kielbasa ball tip consequat sint et ut andouille dolore dolore meatloaf.</p>
+        </div>
+        </div> -->
 
-        <!-- User's reviews -->
+
         <div class="row">
-            <div class="col-sm-6">
-                <div class="column">
+            <div class="col-lg-6">
+                <div class="review-column">
                     <h3>Reviews from clients</h3>
                     {% if reviews_clients %}
                     <p class="rating">Average Rating: <span class="bold">{{ avg_rating_clients }}</span></p>
-                        {% for review in reviews_clients %}
-                            <div class="review">
-                                <p class="bold">{{ review.rating }}/5 given by 
-                                    {% if review.author == request.user %}
-                                        <a href="{% url 'user_profile' username=review.author %}">{{ review.author }} (you)</a> 
-                                    {% else %}
-                                        <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> 
-                                    {% endif %}
-                                on <span class="date">{{ review.created_date }}</span></p>                                
-                                <p>{{ review.comment }}</p>    
-                            </div>
-                        {% endfor %}
+                        <div>
+                            {% for review in reviews_clients %}
+                                <div class="review">
+                                    <p class="bold">{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> on <span class="date">{{ review.created_date }}</span></p>
+                                    <p>{{ review.comment }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
                     {% else %}
                         <p>{{ user.username }} has no reviews from clients.</p>
                     {% endif %}
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="column">
+            <div class="col-lg-6">
+                <div class="review-column">
                     <h3>Reviews from providers</h3>
-                    {% if reviews_providers %} 
+                    {% if reviews_providers %}
                     <p class="rating">Average Rating: <span class="bold">{{ avg_rating_providers }}</span></p>
-                        {% for review in reviews_providers %}
-                            <div class="review">
-                                <p class="bold">{{ review.rating }}/5 given by 
-                                    {% if review.author == request.user %}
-                                        <a href="{% url 'user_profile' username=review.author %}">{{ review.author }} (you)</a> 
-                                    {% else %}
-                                        <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> 
-                                    {% endif %}
-                                on <span class="date">{{ review.created_date }}</span></p>
-                                <p>{{ review.comment }}</p>   
-                            </div>
-                        {% endfor %}                    
+                        <div>
+                            {% for review in reviews_providers %}
+                                <div class="review">
+                                    <p class="bold">{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> on <span class="date">{{ review.created_date }}</span></p>
+                                <p>{{ review.comment }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
                     {% else %}
                         <p>{{ user.username }} has no reviews from providers.</p>
                     {% endif %}
                 </div>
             </div>
-        </div>   
-        
-    </div>
+        </div>
 
+    </div>
+<!--
+<script>
+    function readURL(input){
+        if(input.files && input.files[0]){
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+                $('#blah')
+                    .attr('src', e.target.result)
+                    .width(175)
+                    .height(175)
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script> -->
 
 
 
