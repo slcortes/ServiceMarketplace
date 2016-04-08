@@ -36,7 +36,13 @@
                     <p class="rating">Average Rating: <span class="bold">{{ avg_rating_clients }}</span></p>
                         {% for review in reviews_clients %}
                             <div class="review">
-                                <p class="bold">{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> on <span class="date">{{ review.created_date }}</span></p>
+                                <p class="bold">{{ review.rating }}/5 given by 
+                                    {% if review.author == request.user %}
+                                        <a href="{% url 'user_profile' username=review.author %}">{{ review.author }} (you)</a> 
+                                    {% else %}
+                                        <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> 
+                                    {% endif %}
+                                on <span class="date">{{ review.created_date }}</span></p>                                
                                 <p>{{ review.comment }}</p>    
                             </div>
                         {% endfor %}
@@ -52,8 +58,14 @@
                     <p class="rating">Average Rating: <span class="bold">{{ avg_rating_providers }}</span></p>
                         {% for review in reviews_providers %}
                             <div class="review">
-                                <p class="bold">{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> on <span class="date">{{ review.created_date }}</span></p>
-                                <p>{{ review.comment }}</p>  
+                                <p class="bold">{{ review.rating }}/5 given by 
+                                    {% if review.author == request.user %}
+                                        <a href="{% url 'user_profile' username=review.author %}">{{ review.author }} (you)</a> 
+                                    {% else %}
+                                        <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> 
+                                    {% endif %}
+                                on <span class="date">{{ review.created_date }}</span></p>
+                                <p>{{ review.comment }}</p>   
                             </div>
                         {% endfor %}                    
                     {% else %}

@@ -197,8 +197,8 @@ def my_account(request):
     reviews_clients = reviews.filter(account_type='client')[:2]
     reviews_providers = reviews.filter(account_type='provider')[:2]
 
-    services_open = Service.objects.filter(client=request.user, is_open=True)[:3]
-    services_closed = Service.objects.filter(client=request.user, is_open=False)[:3]
+    services_open = Service.objects.filter(client=request.user, is_open=True).order_by('-created_date')[:3]
+    services_closed = Service.objects.filter(client=request.user, is_open=False).order_by('-created_date')[:3]
 
     return render(
         request,
@@ -233,8 +233,8 @@ def more_reviews(request):
 
 @login_required
 def more_services(request):
-    services_open = Service.objects.filter(client=request.user, is_open=True)
-    services_closed = Service.objects.filter(client=request.user, is_open=False)
+    services_open = Service.objects.filter(client=request.user, is_open=True).order_by('-created_date')
+    services_closed = Service.objects.filter(client=request.user, is_open=False).order_by('-created_date')
 
     return render(
         request,
