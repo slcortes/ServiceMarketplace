@@ -84,7 +84,7 @@ def register_user(request):
             print(args['errors'])
             args['form'] = form
 
-    return render_to_response('market/register.html', args)
+    return render(request, 'market/register.html', args)
 
 
 def register_success(request):
@@ -116,10 +116,11 @@ def service_create(request):
 
 
 def service_detail(request, pk):
+    args = {}
     service = get_object_or_404(Service, pk=pk)
-    owner = is_owner(request=request, service=service)
-    return render(request, 'market/service_detail.html',
-                  {'service': service, 'is_owner': owner})
+    args['service'] = service
+    args['is_owner'] = is_owner(request=request, service=service)
+    return render(request, 'market/service_detail.html', args)
 
 
 @login_required
@@ -152,6 +153,11 @@ def bidded(request):
     username = request.GET.get('username')
     add_permission(username, 'can_add_review')
     return HttpResponse(username + " bidded")
+
+
+def bid(request):
+    return HttpResponse("Added Bid")
+
 
 
 

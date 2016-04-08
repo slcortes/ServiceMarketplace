@@ -3,6 +3,24 @@ from django.utils import timezone
 from django.conf import settings
 
 
+class Bid(models.Model):
+    service_provider = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='bid_service_providers',
+        null=True,
+        blank=True
+    )
+    bid = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=1000.00
+    )
+    bid_time = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.bid
+
+
 class Service(models.Model):
     client = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -22,6 +40,7 @@ class Service(models.Model):
     final_time = models.DateTimeField("Ending Time")
     category = models.CharField(max_length=50, default="Other")
     is_open = models.BooleanField(default=True)
+    bids = models.ManyToManyField(Bid)
     bid = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -32,8 +51,6 @@ class Service(models.Model):
 
     def __str__(self):
         return self.title
-
-
 
 
 class Review(models.Model):
@@ -62,7 +79,7 @@ class Review(models.Model):
 
     def __str__(self):
         return self.comment
-    
+
     class Meta:
         permissions = (
             ('can_add_review', 'can_add_review'),

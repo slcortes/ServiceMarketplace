@@ -78,7 +78,7 @@ function bidding() {
         if (submitted_bid_split.length == 2) {
             submitted_bid = submitted_bid_split[0] + "." +
             submitted_bid_split[1].substring(0,2);
-        } else {
+        } else if (submitted_bid_split.length != 1) {
             invalid_format = true;
         }
 
@@ -91,7 +91,8 @@ function bidding() {
 
             //Check if a zero needs to be added to the end
             submitted_bid_split = String(submitted_bid).split(".");
-            if (submitted_bid_split[1].length == 1) {
+            if (submitted_bid_split.length != 1 &&
+                submitted_bid_split[1].length == 1) {
                 submitted_bid = submitted_bid_split[0] + "." +
                 addZeroToEnd(submitted_bid_split[1]);
             }
@@ -108,6 +109,19 @@ function bidding() {
                 url: "/bidded/?username=" + $("#owner").text(),
                 dataType: "json"
             });
+            //
+            // $.ajax({
+            //     method: "POST",
+            //     url: "/bid/",
+            //     data: JSON.stringify(
+            //         {"bid": submitted_bid,
+            //         "pk": window.location.pathname.split("/")[2]}
+            //     ),
+            //     dataType: "json",
+            //     success: function(msg) {
+            //         console.log(msg)
+            //     }
+            // });
         } else if (submitted_bid < 0){
             $("#error_bid").text('Enter a bid greater than $0!');
         } else if (invalid_format){

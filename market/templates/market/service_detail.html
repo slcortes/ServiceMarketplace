@@ -33,9 +33,11 @@
 
         <div id="bid">
             $<span id="current_bid">{{ service.bid }}</span>
-            <input type='text' id='bidInput' placeholder='Bid'>
-            <input type='submit' id='submit' name='submit'>
-            <p id="error_bid" style="color: red;"></p>
+            {% if is_owner %}
+                <input type='text' id='bidInput' placeholder='Bid'>
+                <input type='submit' id='submit' name='submit'>
+                <p id="error_bid" style="color: red;"></p>
+            {% endif %}
         </div>
 
         {% if is_owner %}
