@@ -160,6 +160,7 @@ def service_end(request, pk):
     service.is_open = False
     now = datetime.now()
     service.final_time = now
+    service.service_provider = request.user
     service.save()
     return HttpResponse("Service Ended")
 
@@ -175,6 +176,7 @@ def bid(request):
     service = get_object_or_404(Service, pk=request.GET['pk'])
     bid = Bid(bid=request.GET['bid'], service=service,
               service_provider=request.user)
+    print(request.GET['bid'])
     bid.save()
 
     return HttpResponse("Added Bid")
@@ -241,7 +243,7 @@ def more_reviews(request):
     reviews = Review.objects.filter(user=request.user).order_by('-created_date')
     reviews_clients = reviews.filter(account_type='client')
     reviews_providers = reviews.filter(account_type='provider')
-    
+
     return render(
         request,
         'market/reviews.html', {
@@ -265,7 +267,7 @@ def more_services(request):
         }
     )
 
-    
+
 def user_profile(request, username):
     user = User.objects.get(username=username)
 
