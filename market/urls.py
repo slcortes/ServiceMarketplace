@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^service/(?P<pk>\d+)/$', views.service_detail, name="service_detail"),
     url(r'^service/close/(?P<pk>\d+)/$', views.service_close, name="service_close"),
     url(r'^service/update/(?P<pk>\d+)/$', views.service_update, name="service_update"),
+    url(r'^service/end/(?P<pk>\d+)/$', views.service_end, name="service_end"),
 
     # Bidding
     url(r'^bidded/$', views.bidded, name="bidded"),

@@ -31,7 +31,14 @@ $(document).ready(function() {
     .on('finish.countdown', function(event) {
         $(this).html('This offer has expired!')
         .parent().addClass('disabled');
-
+        $.ajax({
+            method: "GET",
+            url: "/service/end/" + window.location.pathname.split("/")[2],
+            dataType: "json",
+            error: function(msg) {
+                console.log(msg)
+            }
+        });
     });
 
     bidding();
@@ -56,21 +63,67 @@ function bidding() {
         checkAndPushBid();
     });
     $('#bidInput').keypress(function (e) {
-      if (e.keyCode == 13) {
-        checkAndPushBid();
-      }
+        if (e.keyCode == 13) {
+            checkAndPushBid();
+        }
     });
 
     //Watch for bids and display new bid
     myDataRef.on('child_added', function(snapshot) {
-      var message = snapshot.val();
-      displayBid(message.bid);
+        var message = snapshot.val();
+        displayBid(message.bid);
     });
 
-
-
     //Check and push bid
-    function checkAndPushBid(bid) {
+    function checkAndPushBid() {
+
+        if ($("#clock").text() == "This offer has expired!") {
+            return;
+        }
+
+        //If 0, push bid and close service
+        if (parseFloat($('#bidInput').val()) == 0) {
+
+            var end_date = new Date;
+            var date = new Date(end_date.toISOString());
+            end_date = '';
+            end_date += date.getFullYear() + '/';
+            end_date += dateLengthOne((date.getMonth() + 1)) + '/';
+            end_date += dateLengthOne(date.getDate()) + ' ';
+            end_date += date.getHours() + ':';
+            end_date += date.getMinutes() + ':';
+            end_date += date.getSeconds();
+            $('#clock').countdown(end_date)
+            .on('finish.countdown', function(event) {
+                $(this).html('This offer has expired!')
+                .parent().addClass('disabled');
+
+                //End bidding
+                $.ajax({
+                    method: "GET",
+                    url: "/service/end/" + window.location.pathname.split("/")[2],
+                    dataType: "json",
+                    error: function(msg) {
+                        console.log(msg)
+                    }
+                });
+
+                //Create and save new bid object
+                $.ajax({
+                    method: "GET",
+                    url: "/bid/?bid=" + submitted_bid + "&pk=" +
+                    window.location.pathname.split("/")[2],
+                    dataType: "json",
+                    error: function(msg) {
+                        console.log(msg)
+                    }
+                });
+            });
+
+            myDataRef.push({bid: 0});
+            return;
+        }
+
         var invalid_format = false
 
         var submitted_bid = $('#bidInput').val();
@@ -87,58 +140,59 @@ function bidding() {
         submitted_bid = parseFloat(submitted_bid, 10);
 
         if ((submitted_bid < current_bid) && submitted_bid > 0 &&
-             !invalid_format) {
+        !invalid_format) {
 
             //Check if a zero needs to be added to the end
             submitted_bid_split = String(submitted_bid).split(".");
             if (submitted_bid_split.length != 1 &&
                 submitted_bid_split[1].length == 1) {
-                submitted_bid = submitted_bid_split[0] + "." +
-                addZeroToEnd(submitted_bid_split[1]);
+                    submitted_bid = submitted_bid_split[0] + "." +
+                    addZeroToEnd(submitted_bid_split[1]);
+                }
+
+                //Send bid
+                myDataRef.push({bid: submitted_bid});
+
+                $('#bidInput').val('');
+                $("#error_bid").text('');
+
+                //Add permission that they can review
+                $.ajax({
+                    method: "GET",
+                    url: "/bidded/?username=" + $("#owner").text(),
+                    dataType: "json",
+                    error: function(msg) {
+                        console.log(msg)
+                    }
+                });
+
+                //Create and save new bid object
+                $.ajax({
+                    method: "GET",
+                    url: "/bid/?bid=" + submitted_bid + "&pk=" +
+                    window.location.pathname.split("/")[2],
+                    dataType: "json",
+                    error: function(msg) {
+                        console.log(msg)
+                    }
+                });
+            } else if (submitted_bid < 0){
+                $("#error_bid").text('Enter a bid greater than $0!');
+            } else if (invalid_format){
+                $("#error_bid").text('Invalid Format!');
+            } else {
+                $("#error_bid").text('Enter a bid lower than ' + current_bid + '!');
             }
-
-            //Send bid
-            myDataRef.push({bid: submitted_bid});
-
-            $('#bidInput').val('');
-            $("#error_bid").text('');
-
-            //Add permission that they can review
-            $.ajax({
-                method: "GET",
-                url: "/bidded/?username=" + $("#owner").text(),
-                dataType: "json"
-            });
-            //
-            // $.ajax({
-            //     method: "POST",
-            //     url: "/bid/",
-            //     data: JSON.stringify(
-            //         {"bid": submitted_bid,
-            //         "pk": window.location.pathname.split("/")[2]}
-            //     ),
-            //     dataType: "json",
-            //     success: function(msg) {
-            //         console.log(msg)
-            //     }
-            // });
-        } else if (submitted_bid < 0){
-            $("#error_bid").text('Enter a bid greater than $0!');
-        } else if (invalid_format){
-            $("#error_bid").text('Invalid Format!');
-        } else {
-            $("#error_bid").text('Enter a bid lower than ' + current_bid + '!');
         }
+
+        //Display new bids
+        function displayBid(bid) {
+            $('#current_bid').text(bid);
+        };
+
+        //Add zero to .x
+        function addZeroToEnd(decimal) {
+            return decimal + '0';
+        }
+
     }
-
-    //Display new bids
-    function displayBid(bid) {
-      $('#current_bid').text(bid);
-    };
-
-    //Add zero to .x
-    function addZeroToEnd(decimal) {
-        return decimal + '0';
-    }
-
-}

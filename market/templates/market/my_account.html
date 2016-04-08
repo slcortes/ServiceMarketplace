@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Your account</h1>
-    
+
     <!-- Account info -->
     <div>
         <h3>{{ user.username }}</h3>
@@ -50,34 +50,34 @@
         <div class="row">
     		<div class="col-lg-6">
     			<h3>Reviews from clients:</h3>
-    			{% if reviews_clients %}  
-                    <h4>Average Rating: {{ avg_rating_clients }}</h4>      
+    			{% if reviews_clients %}
+                    <h4>Average Rating: {{ avg_rating_clients }}</h4>
                     {% for review in reviews_clients %}
-                        <div class="review">               
+                        <div class="review">
                             <p>{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a></p>
                             <p>{{ review.comment }}</p>
-                            <div class="date">{{ review.created_date }}</div>                
+                            <div class="date">{{ review.created_date }}</div>
                         </div>
-                    {% endfor %} 
+                    {% endfor %}
                 {% else %}
                     <p>You have no reviews from clients.</p>
                 {% endif %}
     		</div>
             <div class="col-lg-6">
                 <h3>Reviews from providers:</h3>
-                {% if reviews_providers %}        
+                {% if reviews_providers %}
                     <h4>Average Rating: {{ avg_rating_providers }}</h4>
                     {% for review in reviews_providers %}
-                        <div class="review">               
+                        <div class="review">
                             <p>{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a></p>
                             <p>{{ review.comment }}</p>
-                            <div class="date">{{ review.created_date }}</div>                
+                            <div class="date">{{ review.created_date }}</div>
                         </div>
-                    {% endfor %} 
+                    {% endfor %}
                 {% else %}
                     <p>You have no reviews from providers.</p>
                 {% endif %}
-            </div>   
+            </div>
         </div>
 	</div>
 

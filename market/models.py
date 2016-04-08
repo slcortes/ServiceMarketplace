@@ -1,24 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
-
-
-class Bid(models.Model):
-    service_provider = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name='bid_service_providers',
-        null=True,
-        blank=True
-    )
-    bid = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=1000.00
-    )
-    bid_time = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return self.bid
+import datetime as DT
 
 
 class Service(models.Model):
@@ -34,13 +17,14 @@ class Service(models.Model):
         null=True,
         blank=True
     )
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, default="Service")
     description = models.TextField()
     location = models.CharField(max_length=50, default="U.S.")
-    final_time = models.DateTimeField("Ending Time")
+    today = DT.date.today()
+    week_from_now = today + DT.timedelta(days=7)
+    final_time = models.DateTimeField("Ending Time", default=week_from_now)
     category = models.CharField(max_length=50, default="Other")
     is_open = models.BooleanField(default=True)
-    bids = models.ManyToManyField(Bid)
     bid = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -51,6 +35,28 @@ class Service(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Bid(models.Model):
+    service = models.ForeignKey(
+        Service,
+        related_name='service_bid',
+        null=True,
+        blank=True)
+    service_provider = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='bid_service_providers',
+        null=True,
+        blank=True
+    )
+    bid = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=1000.00
+    )
+
+    def __str__(self):
+        return str(self.bid)
 
 
 class Review(models.Model):

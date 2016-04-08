@@ -6,10 +6,10 @@ from django.contrib import auth, messages
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, render_to_response, get_object_or_404
-from market.models import Service, Review
+from market.models import Service, Bid, Review
 from market.forms import MyRegistrationForm, ServiceForm, ReviewForm
 from market.functions import is_owner, get_avg_rating, paginate, add_permission
-
+from datetime import datetime
 
 
 
@@ -120,6 +120,12 @@ def service_detail(request, pk):
     service = get_object_or_404(Service, pk=pk)
     args['service'] = service
     args['is_owner'] = is_owner(request=request, service=service)
+
+    if service.is_open:
+        args['is_open'] = True
+    else:
+        args['is_open'] = False
+
     return render(request, 'market/service_detail.html', args)
 
 
@@ -148,6 +154,16 @@ def service_update(request, pk):
     return render(request, 'market/service_action.html', args)
 
 
+@login_required
+def service_end(request, pk):
+    service = get_object_or_404(Service, pk=pk)
+    service.is_open = False
+    now = datetime.now()
+    service.final_time = now
+    service.save()
+    return HttpResponse("Service Ended")
+
+
 # Give permission to review once bid
 def bidded(request):
     username = request.GET.get('username')
@@ -156,6 +172,11 @@ def bidded(request):
 
 
 def bid(request):
+    service = get_object_or_404(Service, pk=request.GET['pk'])
+    bid = Bid(bid=request.GET['bid'], service=service,
+              service_provider=request.user)
+    bid.save()
+
     return HttpResponse("Added Bid")
 
 
