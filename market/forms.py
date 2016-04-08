@@ -48,8 +48,9 @@ class MyRegistrationForm(UserCreationForm):
 
 
 class ServiceForm(forms.ModelForm):
-    final_time = forms.SplitDateTimeField(input_date_formats=['%m/%d/%Y'],
-                                          input_time_formats=['%H:%M%p'])
+    final_time = forms.SplitDateTimeField(
+        input_date_formats=['%m/%d/%Y'],
+        input_time_formats=['%H:%M%p'],)
 
     class Meta:
         model = Service

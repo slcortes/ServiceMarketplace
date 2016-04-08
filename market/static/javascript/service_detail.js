@@ -84,6 +84,27 @@ function bidding() {
         //If 0, push bid and close service
         if (parseFloat($('#bidInput').val()) == 0) {
 
+            //Create and save new bid object
+            $.ajax({
+                method: "GET",
+                url: "/bid/?bid=" + 0 + "&pk=" +
+                window.location.pathname.split("/")[2],
+                dataType: "json",
+                error: function(msg) {
+                    console.log(msg)
+                }
+            });
+
+            //End bidding
+            $.ajax({
+                method: "GET",
+                url: "/service/end/" + window.location.pathname.split("/")[2],
+                dataType: "json",
+                error: function(msg) {
+                    console.log(msg)
+                }
+            });
+
             var end_date = new Date;
             var date = new Date(end_date.toISOString());
             end_date = '';
@@ -97,27 +118,6 @@ function bidding() {
             .on('finish.countdown', function(event) {
                 $(this).html('This offer has expired!')
                 .parent().addClass('disabled');
-
-                //End bidding
-                $.ajax({
-                    method: "GET",
-                    url: "/service/end/" + window.location.pathname.split("/")[2],
-                    dataType: "json",
-                    error: function(msg) {
-                        console.log(msg)
-                    }
-                });
-
-                //Create and save new bid object
-                $.ajax({
-                    method: "GET",
-                    url: "/bid/?bid=" + submitted_bid + "&pk=" +
-                    window.location.pathname.split("/")[2],
-                    dataType: "json",
-                    error: function(msg) {
-                        console.log(msg)
-                    }
-                });
             });
 
             myDataRef.push({bid: 0});

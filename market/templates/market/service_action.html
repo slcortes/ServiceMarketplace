@@ -1,11 +1,11 @@
 {% extends "market/base.html" %}
 
 {% block css %}
-    {% load staticfiles %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.11/jquery.timepicker.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.11/jquery.timepicker.min.css">
-    <script src="{% static 'javascript/service_action.js'%}"></script>
-    <link rel="stylesheet" href="{% static 'css/service_action.css' %}">
+{% load staticfiles %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.11/jquery.timepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.8.11/jquery.timepicker.min.css">
+<script src="{% static 'javascript/service_action.js'%}"></script>
+<link rel="stylesheet" href="{% static 'css/service_action.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -17,14 +17,16 @@
         <br>
         <form action="" method="post">{% csrf_token %}
             {% for field in form %}
-              {{ field.label_tag }}
-              <br>
-              {{ field }}
-              <br>
+
+            {{ field.label_tag }}
+            {{ field.errors }}
+            <br>
+            {{ field }}
+            <br>
             {% endfor %}
 
             {% if errors %}
-                {{errors}}
+            {{errors}}
             {% endif %}
 
             <br>
