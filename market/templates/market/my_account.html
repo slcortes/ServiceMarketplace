@@ -1,85 +1,128 @@
 {% extends "market/base.html" %}
 
-{% block content %}
-    <h1>Your account</h1>
+{% block css %}
+{% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+{% endblock %}
 
-    <!-- Account info -->
-    <div>
-        <h3>{{ user.username }}</h3>
-        <p>{{ user.first_name }}</p>
-        <p>{{ user.last_name }}</p>
-        <p>{{ user.email }}</p>
+
+{% block content %}
+   <!-- Account info -->
+   <div class="container">
+        <h1>Your account</h1>
+
+        <div class="profile-info">
+            <h3>{{ user.username }}</h3>
+            <p>{{ user.first_name }}</p>
+            <p>{{ user.last_name }}</p>
+            <p>{{ user.email }}</p>
+       </div>
     </div>
+
+
 
     <!-- Account services -->
     <div class="container">
         <div class="row">
-    		<div class="col-lg-6">
-    			<h3>Winning bids:</h3>
-    		</div>
-            <div class="col-lg-6">
-                <h3>Open:</h3>
-                {% for service in services_open %}
-                    <div class="service">
-                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
-                        <p>{{ service.description|linebreaks }}</p>
-                        <div class="date">
-                            <p>created: {{ service.created_date }}</p>
+
+            <div class="col-sm-4">
+                <div class="column">
+                    <h3>Bid History</h3>
+
+                </div>
+
+            </div>
+            <div class="col-sm-4">
+                <div class="column">
+                    <h3>Open Services</h3>
+                    {% if services_open %}
+                        {% for service in services_open %}
+                        <div class="service">
+                            <h4><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h4>
+                            <p>{{ service.description|linebreaks|truncatechars:50 }}</p>
+                            <div class="date">
+                                <p>created: {{ service.created_date }}</p>
+                            </div>
+                            <button type="button"><a href="{% url 'service_update' pk=service.pk %}">Update</a></button>
+                            <button type="button"><a href="{% url 'service_close' pk=service.pk %}">Close</a></button>
                         </div>
-                        <a href="{% url 'service_update' pk=service.pk %}">Update</a>
-                        <a href="{% url 'service_close' pk=service.pk %}">Close</a>
-                    </div>
-                {% endfor %}
-    			<h3>Closed:</h3>
-                {% for service in services_closed %}
-                    <div class="service">
-                        <h1><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h1>
-                        <p>{{ service.description|linebreaks }}</p>
-                        <div class="date">
-                            <p>created: {{ service.created_date }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
-    		</div>
+                        {% endfor %}
+
+                        <div class="more"><a href="{% url 'more_services' %}">All Services</a></div>
+                    {% else %}
+                        <p>You have no open services.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+            <div class="col-sm-4">
+                <div class="column">
+                    <h3>Closed Services</h3>
+                    {% if services_closed %}
+                        {% for service in services_closed %}
+                            <div class="service">
+                                <h4><a href="{% url 'service_detail' pk=service.pk %}">{{ service.title }}</a></h4>
+                                <p>{{ service.description|linebreaks|truncatechars:40 }}</p>
+                                <div class="date">
+                                    <p>created: {{ service.created_date }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="more"><a href="{% url 'more_services' %}">All Services</a></div>
+                    {% else %}
+                        <p>You have no closed services.</p>
+                    {% endif %}
+                </div>
+            </div>
+
         </div>
-	</div>
+    </div>
+
+
+
 
     <!-- Account reviews -->
     <div class="container">
-        <h3>Your reviews...</h3>
         <div class="row">
-    		<div class="col-lg-6">
-    			<h3>Reviews from clients:</h3>
-    			{% if reviews_clients %}
-                    <h4>Average Rating: {{ avg_rating_clients }}</h4>
-                    {% for review in reviews_clients %}
-                        <div class="review">
-                            <p>{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a></p>
-                            <p>{{ review.comment }}</p>
-                            <div class="date">{{ review.created_date }}</div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>You have no reviews from clients.</p>
-                {% endif %}
-    		</div>
-            <div class="col-lg-6">
-                <h3>Reviews from providers:</h3>
-                {% if reviews_providers %}
-                    <h4>Average Rating: {{ avg_rating_providers }}</h4>
-                    {% for review in reviews_providers %}
-                        <div class="review">
-                            <p>{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a></p>
-                            <p>{{ review.comment }}</p>
-                            <div class="date">{{ review.created_date }}</div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>You have no reviews from providers.</p>
-                {% endif %}
+            <div class="col-sm-6">
+                <div class="column">
+                    <h3>Reviews from clients</h3>
+                    {% if reviews_clients %}
+                        <p class="rating">Average Rating: <span class="bold">{{ avg_rating_clients }}</span></p>
+                        {% for review in reviews_clients %}
+                            <div class="review">
+                                <p class="bold">{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> on <span class="date">{{ review.created_date }}</span></p>
+                                <p>{{ review.comment }}</p>
+                            </div>
+                        {% endfor %}
+
+                        <div class="more"><a href="{% url 'more_reviews' %}">All Reviews</a></div>
+                    {% else %}
+                        <p>You have no reviews from clients.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="column">
+                    <h3>Reviews from providers</h3>
+                    {% if reviews_providers %}
+                        <p class="rating">Average Rating: <span class="bold">{{ avg_rating_providers }}</span></p>
+                        {% for review in reviews_providers %}
+                            <div class="review">
+                                <p class="bold">{{ review.rating }}/5 given by <a href="{% url 'user_profile' username=review.author %}">{{ review.author }}</a> on <span class="date">{{ review.created_date }}</span></p>
+                                <p>{{ review.comment }}</p>
+                            </div>
+                        {% endfor %}
+
+                        <div class="more"><a href="{% url 'more_reviews' %}">All Reviews</a></div>
+                    {% else %}
+                        <p>You have no reviews from providers.</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
-	</div>
+    </div>
 
 
 {% endblock %}

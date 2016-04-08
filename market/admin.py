@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Service, Bid, Review
+from .models import Service, Review, Bid
 
 
 admin.site.register(Service)

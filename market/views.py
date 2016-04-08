@@ -215,11 +215,11 @@ def my_account(request):
     avg_rating_p = get_avg_rating(username=request.user, mode='provider')
 
     reviews = Review.objects.filter(user=request.user).order_by('-created_date')
-    reviews_clients = reviews.filter(account_type='client')
-    reviews_providers = reviews.filter(account_type='provider')
+    reviews_clients = reviews.filter(account_type='client')[:2]
+    reviews_providers = reviews.filter(account_type='provider')[:2]
 
-    services_open = Service.objects.filter(client=request.user, is_open=True)
-    services_closed = Service.objects.filter(client=request.user, is_open=False)
+    services_open = Service.objects.filter(client=request.user, is_open=True).order_by('-created_date')[:3]
+    services_closed = Service.objects.filter(client=request.user, is_open=False).order_by('-created_date')[:3]
 
     return render(
         request,
@@ -233,7 +233,39 @@ def my_account(request):
         }
     )
 
+@login_required
+def more_reviews(request):
+    avg_rating_c = get_avg_rating(username=request.user, mode='client')
+    avg_rating_p = get_avg_rating(username=request.user, mode='provider')
 
+    reviews = Review.objects.filter(user=request.user).order_by('-created_date')
+    reviews_clients = reviews.filter(account_type='client')
+    reviews_providers = reviews.filter(account_type='provider')
+    
+    return render(
+        request,
+        'market/reviews.html', {
+            'avg_rating_clients': avg_rating_c,
+            'avg_rating_providers': avg_rating_p,
+            'reviews_clients': reviews_clients,
+            'reviews_providers': reviews_providers,
+        }
+    )
+
+@login_required
+def more_services(request):
+    services_open = Service.objects.filter(client=request.user, is_open=True).order_by('-created_date')
+    services_closed = Service.objects.filter(client=request.user, is_open=False).order_by('-created_date')
+
+    return render(
+        request,
+        'market/services.html', {
+            'services_open': services_open,
+            'services_closed': services_closed
+        }
+    )
+
+    
 def user_profile(request, username):
     user = User.objects.get(username=username)
 

@@ -23,7 +23,7 @@
                             <p>{{ service.description|truncatechars:40 }}</p>
 
                             {% if service.client == user %}
-                                <p>By: <a href="{% url 'my_account' %}">You</a></p>
+                                <p>By: <a href="{% url 'my_account' %}">{{ service.client }} (you)</a></p>
                             {% else %}
                             <p>By: <a href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
                             {% endif %}
@@ -43,7 +43,7 @@
                             <p>{{ service.description|truncatechars:40 }}</p>
 
                             {% if service.client == user %}
-                                <p>By: <a href="{% url 'my_account' %}">You</a></p>
+                                <p>By: <a href="{% url 'my_account' %}">{{ service.client }} (you)</a></p>
                             {% else %}
                                 <p>By: <a href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
                             {% endif %}
@@ -63,7 +63,7 @@
                             <p>{{ service.description|truncatechars:40 }}</p>
 
                             {% if service.client == user %}
-                                <p>By: <a href="{% url 'my_account' %}">You</a></p>
+                                <p>By: <a href="{% url 'my_account' %}">{{ service.client }} (you)</a></p>
                             {% else %}
                                 <p>By: <a href="{% url 'user_profile' username=service.client %}">{{ service.client }}</a></p>
                             {% endif %}

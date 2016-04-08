@@ -26,6 +26,8 @@ urlpatterns = [
 
     # My Account
     url(r'^my_account/$', views.my_account, name="my_account"),
+    url(r'^my_account/reviews/$', views.more_reviews, name="more_reviews"),
+    url(r'^my_account/services/$', views.more_services, name="more_services"),
 
     # User profiles
     url(r'^user/(?P<username>[\w.@+-]+)/$', views.user_profile, name="user_profile"),

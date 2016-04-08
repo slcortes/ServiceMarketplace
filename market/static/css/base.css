@@ -51,6 +51,10 @@ html, body {
 	margin: 40 40;
 }
 
+#content {
+    padding-bottom: 50px;
+}
+
 #footer {
 	background:#1a0000;
 	width:100%;
